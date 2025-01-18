@@ -14,3 +14,79 @@ datasource db {
 }
 
 //! Aqui se agregan los modelos para crear la base de datos
+
+model user {
+  id            Int         @id @default(autoincrement())
+  nombre        String
+  email         String      @unique
+  password      String
+  premium       Boolean     @default(false)
+  nivel         Int         @default(1)
+  exp           Int
+  racha         Int         @default(0)
+  monedas       Int         @default(0)
+  fechaCreacion DateTime
+  resultados    resultado[] @relation("UserResultados")
+  amigos1       amigo[]     @relation("Usuario1Amigos")
+  amigos2       amigo[]     @relation("Usuario2Amigos")
+  items         item[]      @relation("UsuarioItems")
+}
+
+model item {
+  id       Int    @id @default(autoincrement())
+  nombre   String
+  precio   Int
+  usuarios user[] @relation("UsuarioItems")
+}
+
+model amigo {
+  id          Int    @id @default(autoincrement())
+  id_usuario1 Int
+  id_usuario2 Int
+  estado      String
+  usuario1    user   @relation("Usuario1Amigos", fields: [id_usuario1], references: [id])
+  usuario2    user   @relation("Usuario2Amigos", fields: [id_usuario2], references: [id])
+
+  @@unique([id_usuario1, id_usuario2])
+  @@unique([id_usuario2, id_usuario1])
+}
+
+model resultado {
+  id                  Int       @id @default(autoincrement())
+  tiempo              Int
+  calificacion        Int
+  cantidadCorrectas   Int
+  cantidadIncorrectas Int
+  user                user      @relation("UserResultados", fields: [id_usuario], references: [id])
+  id_usuario          Int
+  categoria           categoria @relation("CategoriaResultados", fields: [id_categoria], references: [id])
+  id_categoria        Int
+
+  @@unique([id_usuario, id_categoria]) // Asegura que no haya duplicados en la relación
+}
+
+model categoria {
+  id         Int         @id @default(autoincrement())
+  nombre     String      @unique
+  duracion   Int
+  resultados resultado[] @relation("CategoriaResultados")
+  pregunta   pregunta[]  @relation("CategoriaPregunta")
+}
+
+model pregunta {
+  id           Int         @id @default(autoincrement())
+  enunciado    String
+  imagen_url   String?
+  solucion_url String?
+  id_categoria Int
+  categoria    categoria   @relation("CategoriaPregunta", fields: [id_categoria], references: [id])
+  respuesta    respuesta[] @relation("PreguntaRespuesta")
+}
+
+model respuesta {
+  id          Int      @id @default(autoincrement())
+  esCorrecto  Boolean
+  contenido   String
+  id_pregunta Int
+  pregunta    pregunta @relation("PreguntaRespuesta", fields: [id_pregunta], references: [id])
+}
