@@ -6,7 +6,7 @@ config()
 interface JwtPayload {
     user: {
         id: string;
-        [key: string]: any; // Permitir otras propiedades opcionales
+        [key: string]: any;
     };
 }
 
@@ -20,10 +20,10 @@ interface MyRequest extends Request {
 export default (req: MyRequest, res: Response, next: NextFunction) => {
     try {
 
-        const jwtToken = req.header("jwt_token");
+        const jwtToken = req.header("Authorization")?.split("Bearer ")[1] || req.header("jwt_token");
 
         if (!jwtToken){
-            return res.status(401).send("You are not authorized :(")
+            return res.status(401).json("You are not authorized :(")
         }
 
         if (!process.env.jwtSecret) {
@@ -38,6 +38,6 @@ export default (req: MyRequest, res: Response, next: NextFunction) => {
 
     } catch (error) {
         console.log(error instanceof Error? error.message : error)
-        return res.status(401).send("You are not authorized :(")
+        return res.status(401).json("You are not authorized :(")
     }
 }
