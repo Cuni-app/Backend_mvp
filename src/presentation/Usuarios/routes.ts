@@ -16,7 +16,7 @@ export class UserRoutes {
 
     router.post('/registro', (req,res) => userController.registrarUsuario(req,res))
 
-    router.post('/checkUser', auth as any, (req,res) => userController.confirmarToken(req,res))
+    router.get('/checkUser', auth as any, (req,res) => userController.confirmarToken(req,res))
 
     return router;
   }

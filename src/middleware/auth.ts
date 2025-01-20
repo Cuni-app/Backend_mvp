@@ -26,11 +26,11 @@ export default (req: MyRequest, res: Response, next: NextFunction) => {
             return res.status(401).json("You are not authorized :(")
         }
 
-        if (!process.env.jwtSecret) {
-            throw new Error("Missing jwtSecret in environment variables");
+        if (!process.env.JWT_SECRET) {
+            throw new Error("Missing JWT_SECRET in environment variables");
         }
-        
-        const payload = jwt.verify(jwtToken, process.env.jwtSecret) as JwtPayload;
+
+        const payload = jwt.verify(jwtToken, process.env.JWT_SECRET) as JwtPayload;
 
         req.user = payload.user;
 

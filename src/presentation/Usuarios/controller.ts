@@ -8,7 +8,7 @@ export class UserController {
             console.log("El usuario se ha registrado")
             res.json("Usuario registrado")
         } catch (error) {
-            
+            res.json(error)
         }
         
     }
