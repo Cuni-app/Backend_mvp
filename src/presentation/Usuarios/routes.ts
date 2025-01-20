@@ -1,6 +1,6 @@
 import { NextFunction, Response, Router } from 'express';
 import { UserController } from './controller';
-import {authMiddleware} from '../middleware/auth'
+import {AuthMiddleware} from '../middleware/auth'
 import { AuthService } from '../repository/auth.service';
 
 
@@ -19,7 +19,7 @@ export class UserRoutes {
     router.post('/registro', (req,res) => userController.registrarUsuario(req,res))
     router.post('/login', (req,res) => userController.loginUsuario(req,res))
 
-    router.post('/checkUser', [authMiddleware.validarToken] as any, userController.confirmarToken)
+    router.post('/checkUser', [AuthMiddleware.validarToken], userController.confirmarToken)
 
 
     return router;
