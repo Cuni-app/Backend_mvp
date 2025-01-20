@@ -1,6 +1,6 @@
-import { Router } from 'express';
+import { NextFunction, Response, Router } from 'express';
 import { UserController } from './controller';
-import auth from '../middleware/auth'
+import {authMiddleware} from '../middleware/auth'
 import { AuthService } from '../repository/auth.service';
 
 
@@ -17,9 +17,10 @@ export class UserRoutes {
     // router.use('/api/algo', /*TodoRoutes.routes */ );
 
     router.post('/registro', (req,res) => userController.registrarUsuario(req,res))
-    router.post('/login', (req,res) => userController.confirmarToken(req,res))
+    router.post('/login', (req,res) => userController.loginUsuario(req,res))
 
-    router.get('/checkUser', auth as any, (req,res) => userController.confirmarToken(req,res))
+    router.post('/checkUser', [authMiddleware.validarToken] as any, userController.confirmarToken)
+
 
     return router;
   }
