@@ -16,20 +16,21 @@ datasource db {
 //! Aqui se agregan los modelos para crear la base de datos
 
 model user {
-  id            Int         @id @default(autoincrement())
-  nombre        String
-  email         String      @unique
-  password      String
-  premium       Boolean     @default(false)
-  nivel         Int         @default(1)
-  exp           Int         @default(0)
-  racha         Int         @default(0)
-  monedas       Int         @default(0)
-  fechaCreacion DateTime
-  resultados    resultado[] @relation("UserResultados")
-  amigos1       amigo[]     @relation("Usuario1Amigos")
-  amigos2       amigo[]     @relation("Usuario2Amigos")
-  items         item[]      @relation("UsuarioItems")
+  id             Int         @id @default(autoincrement())
+  nombre         String
+  email          String      @unique
+  validatedEmail Boolean     @default(false)
+  password       String
+  premium        Boolean     @default(false)
+  nivel          Int         @default(1)
+  exp            Int         @default(0)
+  racha          Int         @default(0)
+  monedas        Int         @default(0)
+  fechaCreacion  DateTime    @default(now())
+  resultados     resultado[] @relation("UserResultados")
+  amigos1        amigo[]     @relation("Usuario1Amigos")
+  amigos2        amigo[]     @relation("Usuario2Amigos")
+  items          item[]      @relation("UsuarioItems")
 }
 
 model item {
