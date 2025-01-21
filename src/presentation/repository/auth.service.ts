@@ -1,5 +1,6 @@
 import { bcryptAdapter } from "../../config/bcrypt.adapter"
 import { JwtAdapter } from "../../config/jwt.adapter"
+import { regularExps } from "../../config/regular-exp"
 import { prisma } from "../../data/postgres"
 
 export class AuthService {
@@ -8,6 +9,8 @@ export class AuthService {
     ){}
 
     public async registrarUsuario(nombre: string,email:string,password:string){
+        if(!regularExps.email.test(email)) throw new Error('email no valido')
+        
         const existingEmail = await prisma.user.findUnique({
             where: {
                 email: email
