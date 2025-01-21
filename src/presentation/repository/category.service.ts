@@ -19,4 +19,9 @@ export class CategoryService {
         })
         return{createdCategory}
     }
+
+    public async obtenerCategorias(){
+        const myCategories = await prisma.categoria.findMany()
+        return { categorias: myCategories}
+    }
 }

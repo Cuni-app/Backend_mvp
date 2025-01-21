@@ -12,4 +12,8 @@ export class CategoriaController {
 
         this.categoryService.registrarCategoria(nombre,duracion).then(data => res.json(data)).catch(error => res.json({error: error.message}))
     }
+    public getAllCategorias = (req: Request, res: Response): void => {
+        this.categoryService.obtenerCategorias().then(data => res.json(data)).catch(error => res.json({error: error.message}))
+    }
+
 }

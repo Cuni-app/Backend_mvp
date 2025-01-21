@@ -10,6 +10,7 @@ export class CategoriaRoutes {
     const categoryService =  new CategoryService()
     const categoriaController = new CategoriaController(categoryService) 
     // Definir las rutas
+    router.get("/getAll", (req, res) => categoriaController.getAllCategorias(req,res))
     router.post("/create", (req, res) => categoriaController.crearCategoria(req, res) );
     return router;
   }
