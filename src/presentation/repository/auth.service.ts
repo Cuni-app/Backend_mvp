@@ -7,7 +7,7 @@ export class AuthService {
         //Servicio de email para confirmación de correo
     ){}
 
-    public async registrarUsuario(user: string,email:string,password:string){
+    public async registrarUsuario(nombre: string,email:string,password:string){
         const existingEmail = await prisma.user.findUnique({
             where: {
                 email: email
@@ -19,14 +19,18 @@ export class AuthService {
 
         const createdUser = await prisma.user.create({
             data:{
-                nombre: user,
+                nombre,
                 email,
                 password: hashedPassword
             }
         })
+        const token = await JwtAdapter.generateToken({id: createdUser.id})
+        if (!token) throw new Error('Error al crear JWT');
 
-        return { createdUser
-        }
+        //email de confirmación
+
+
+        return { createdUser, token}
     }
     public async loginUser(email: string, contrasenia: string){
         const user = await prisma.user.findUnique({
