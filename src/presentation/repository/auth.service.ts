@@ -7,8 +7,26 @@ export class AuthService {
         //Servicio de email para confirmación de correo
     ){}
 
-    public async registrarUsuario(){
-        return Promise
+    public async registrarUsuario(user: string,email:string,password:string){
+        const existingEmail = await prisma.user.findUnique({
+            where: {
+                email: email
+            }
+        })
+        if(existingEmail) throw new Error('Email está en uso')
+        
+        const hashedPassword = bcryptAdapter.hash(password)
+
+        const createdUser = await prisma.user.create({
+            data:{
+                nombre: user,
+                email,
+                password: hashedPassword
+            }
+        })
+
+        return { createdUser
+        }
     }
     public async loginUser(email: string, contrasenia: string){
         const user = await prisma.user.findUnique({

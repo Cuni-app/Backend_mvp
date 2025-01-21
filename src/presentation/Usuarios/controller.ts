@@ -9,8 +9,8 @@ export class UserController {
 
     public registrarUsuario = (req: Request, res: Response):void => {
         try {
-            console.log("El usuario se ha registrado")
-            res.json("Usuario registrado")
+            const {user, email, password} = req.body
+            this.authService.registrarUsuario(user,email,password).then(data => res.json(data)).catch(error => {throw new  Error(error)})
         } catch (error) {
             res.json(error)
         }
