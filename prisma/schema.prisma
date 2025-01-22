@@ -23,21 +23,22 @@ model administrador {
 }
 
 model user {
-  id             Int         @id @default(autoincrement())
-  nombre         String
-  email          String      @unique
-  validatedEmail Boolean     @default(false)
-  password       String
-  premium        Boolean     @default(false)
-  nivel          Int         @default(1)
-  exp            Int         @default(0)
-  racha          Int         @default(0)
-  monedas        Int         @default(0)
-  fechaCreacion  DateTime    @default(now())
-  resultados     resultado[] @relation("UserResultados")
-  amigos1        amigo[]     @relation("Usuario1Amigos")
-  amigos2        amigo[]     @relation("Usuario2Amigos")
-  items          item[]      @relation("UsuarioItems")
+  id                Int         @id @default(autoincrement())
+  nombre            String
+  email             String      @unique
+  validatedEmail    Boolean     @default(false)
+  password          String
+  premium           Boolean     @default(false)
+  nivel             Int         @default(1)
+  exp               Int         @default(0)
+  racha             Int         @default(0)
+  monedas           Int         @default(0)
+  fechaCreacion     DateTime    @default(now())
+  fechaUltimaAccion DateTime    @default(now())
+  resultados        resultado[] @relation("UserResultados")
+  seguidores        follow[]    @relation("UserSeguidos")
+  seguidos          follow[]    @relation("UserSiguiendo")
+  items             item[]      @relation("UsuarioItems")
 }
 
 model item {
@@ -47,16 +48,15 @@ model item {
   usuarios user[] @relation("UsuarioItems")
 }
 
-model amigo {
-  id          Int    @id @default(autoincrement())
-  id_usuario1 Int
-  id_usuario2 Int
-  estado      String
-  usuario1    user   @relation("Usuario1Amigos", fields: [id_usuario1], references: [id])
-  usuario2    user   @relation("Usuario2Amigos", fields: [id_usuario2], references: [id])
+model follow {
+  id          Int  @id @default(autoincrement())
+  id_seguidor Int
+  id_seguido  Int
+  seguidor    user @relation("UserSeguidos", fields: [id_seguidor], references: [id])
+  seguido     user @relation("UserSiguiendo", fields: [id_seguido], references: [id])
 
-  @@unique([id_usuario1, id_usuario2])
-  @@unique([id_usuario2, id_usuario1])
+  @@unique([id_seguidor, id_seguido])
+  @@unique([id_seguido, id_seguidor])
 }
 
 model resultado {

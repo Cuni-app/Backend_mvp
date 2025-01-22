@@ -44,5 +44,3 @@ export class AuthMiddleware {
     }
 }
 
-
-Promise<Response<any, Record<string, any>> | undefined>
