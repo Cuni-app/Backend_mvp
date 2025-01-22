@@ -15,6 +15,13 @@ datasource db {
 
 //! Aqui se agregan los modelos para crear la base de datos
 
+model administrador {
+  id       Int    @id @default(autoincrement())
+  nombre   String @default("ADMIN")
+  email    String @default("cuni@empresa.com")
+  password String
+}
+
 model user {
   id             Int         @id @default(autoincrement())
   nombre         String
