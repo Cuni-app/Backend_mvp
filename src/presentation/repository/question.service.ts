@@ -1,5 +1,10 @@
 import { prisma } from "../../data/postgres"
 
+type preguntaCaracteristicas = {
+    enunciado?: string,
+    imagen_url?: string,
+    solucion_url?: string
+}
 
 export class QuestionService{
     constructor(){}
@@ -29,6 +34,27 @@ export class QuestionService{
                 id:idPregunta
             }
         })
+        return pregunta
+    }
+
+    public async editarPregunta(idPregunta: number, caracteristicas: preguntaCaracteristicas){
+        const currentData = await prisma.pregunta.findUnique({
+            where:{
+                id:idPregunta
+            }
+        })
+        if(!currentData) throw new Error(`Pregunta con id ${idPregunta} no encontrada`)
+        const pregunta = await prisma.pregunta.update({
+            where:{
+                id:idPregunta
+            },
+            data:{
+                enunciado: caracteristicas.enunciado?caracteristicas.enunciado:currentData?.enunciado,
+                imagen_url: caracteristicas.imagen_url? caracteristicas.imagen_url:currentData?.imagen_url,
+                solucion_url: caracteristicas.solucion_url? caracteristicas.solucion_url:currentData?.solucion_url
+            }
+        })
+
         return pregunta
     }
 

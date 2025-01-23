@@ -18,6 +18,7 @@ export class PreguntaRoutes {
     // router.use('/api/algo', /*TodoRoutes.routes */ );
     router.post("/", (req,res) => controller.crearPregunta(req,res))
     router.get("/:id", (req,res) => controller.obtenerPregunta(req,res))
+    router.put("/:id", (req, res) => controller.editarPregunta(req,res))
     router.delete("/:id", (req,res) => controller.eliminarPregunta(req,res))
 
     return router;
