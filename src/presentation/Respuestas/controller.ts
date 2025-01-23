@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
+import { AnswerService } from "../repository/answer.service";
 
 export class RespuestaController{
-    constructor(){}
+    constructor(
+        public readonly answerService: AnswerService
+    ){}
 
     public getRespuestas = async (req: Request, res: Response) => {
         
