@@ -16,7 +16,7 @@ export class ItemService{
             const {nombre, precio} = item
             return {
                 nombre,
-                precio: precio.toString()
+                precio: precio
             }
         } catch (error) {
             throw new Error('Error al crear item')
@@ -34,14 +34,8 @@ export class ItemService{
         })
         if (!user?.items) throw new Error('items no encontrados')
         const arregloItems = user.items
-        const data = arregloItems.map(item => {
-            return {
-                id: item.id,
-                nombre: item.nombre,
-                precio: item.precio.toString()
-            }
-        })
-        return data
+        
+        return arregloItems
     }
 
     public async eliminarItemPorID(idItem: number){
@@ -54,7 +48,7 @@ export class ItemService{
             const {nombre, precio} = itemEliminado
             return {
                 nombre,
-                precio: precio.toString()
+                precio: precio
             }
         } catch (error) {
             throw new Error('Error al eliminar ')

@@ -44,7 +44,7 @@ model user {
 model item {
   id       Int    @id @default(autoincrement())
   nombre   String
-  precio   BigInt
+  precio   Int
   usuarios user[] @relation("UsuarioItems")
 }
 
