@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { PreguntasController } from './controller';
+import { QuestionService } from '../repository/question.service';
 
 
 
@@ -10,7 +11,8 @@ export class PreguntaRoutes {
   static get routes(): Router {
 
     const router = Router();
-    const controller = new PreguntasController()
+    const questionService: QuestionService = new QuestionService()
+    const controller = new PreguntasController(questionService)
     
     // Definir las rutas
     // router.use('/api/algo', /*TodoRoutes.routes */ );
