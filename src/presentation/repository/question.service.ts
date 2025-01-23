@@ -32,4 +32,13 @@ export class QuestionService{
         return pregunta
     }
 
+    public async eliminarPregunta(idPregunta: number) {
+        const preguntaEliminada = await prisma.pregunta.delete({
+            where:{
+                id:idPregunta
+            }
+        })
+        return preguntaEliminada
+    }
+
 }
