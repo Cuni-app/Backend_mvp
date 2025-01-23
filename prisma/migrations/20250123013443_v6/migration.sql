@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "item" ALTER COLUMN "precio" SET DATA TYPE BIGINT;

@@ -34,7 +34,9 @@ export class AuthMiddleware {
             const user = await prisma.user.findUnique({ where: { id: +payload.id } });
             if (!user) return res.status(401).json({ error: 'Invalid token - user' });
             
-            req.body.user = user;
+            const {password, ...usuario} = user
+
+            req.body.user = usuario;
             next();
     
         } catch (error) {
