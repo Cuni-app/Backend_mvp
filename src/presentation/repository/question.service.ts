@@ -24,7 +24,12 @@ export class QuestionService{
     }
 
     public async obtenerPregunta(idPregunta: number) {
-        
+        const pregunta = await prisma.pregunta.findUnique({
+            where:{
+                id:idPregunta
+            }
+        })
+        return pregunta
     }
 
 }

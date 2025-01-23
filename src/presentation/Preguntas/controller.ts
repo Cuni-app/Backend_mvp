@@ -15,7 +15,9 @@ export class PreguntasController {
     }
 
     public obtenerPregunta = (req: Request, res: Response) => {
-
+        const {id} = req.params
+        if(isNaN(+id)) return res.status(401).json("id is not a number")
+        this.questionService.obtenerPregunta(+id).then(data => res.json(data)).catch(error => res.json({error: error.message}))
     }
 
     public eliminarPregunta = (req: Request, res: Response) => {
