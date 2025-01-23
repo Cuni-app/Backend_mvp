@@ -14,7 +14,7 @@ export class RespuestaController{
     }
 
     public crearRespuesta = (req: Request, res: Response) => {
-
+        const {id_pregunta, contenido, esCorrecto} = req.body
     }
 
     public actualizarRespuesta = (req: Request, res: Response) => {

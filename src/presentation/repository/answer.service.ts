@@ -5,11 +5,11 @@ export class AnswerService{
 
     }
 
-    public async actualizarRespuesta(idPregunta: number, contenido: string, correcto: boolean){
+    public async actualizarRespuesta(idRespuesta: number, contenido: string, correcto: boolean){
 
     }
 
-    public async eliminarRespuesta(idPregunta: number){
+    public async eliminarRespuesta(idRespuesta: number){
         
     }
 }
