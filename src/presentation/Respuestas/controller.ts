@@ -26,6 +26,8 @@ export class RespuestaController{
     }
     
     public eliminarRespuesta = (req: Request, res: Response) => {
-
+        const {id} = req.params
+        if(isNaN(+id)) return res.status(401).json("id is not a number")
+        this.answerService.eliminarRespuesta(+id).then(data => res.json(data)).catch(error => res.json({error: error.message}))
     }
 }
