@@ -41,4 +41,13 @@ export class AnswerService{
         })
         return respuestaEliminada
     }
+
+    public async getRespuestasByIdPregunta(idPregunta: number) {
+        const listaRespuestas = await prisma.respuesta.findMany({
+            where:{
+                id_pregunta:idPregunta
+            }
+        })
+        return listaRespuestas
+    }
 }

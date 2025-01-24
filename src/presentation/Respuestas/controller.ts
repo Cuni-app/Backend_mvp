@@ -10,7 +10,9 @@ export class RespuestaController{
         
     }
     public getRespuestasByIdPregunta = async (req: Request, res: Response) => {
-
+        const {id} = req.params
+        if(isNaN(+id)) return res.status(401).json("id is not a number")
+            this.answerService.getRespuestasByIdPregunta(+id).then(data => res.json(data)).catch(error => res.json({error: error.message}))
     }
 
     public crearRespuesta = (req: Request, res: Response) => {
