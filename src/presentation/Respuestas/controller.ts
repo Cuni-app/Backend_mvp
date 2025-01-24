@@ -19,7 +19,10 @@ export class RespuestaController{
     }
 
     public actualizarRespuesta = (req: Request, res: Response) => {
-        
+        const {id} = req.params
+        if(isNaN(+id)) return res.status(401).json("id is not a number")
+        const {contenido, esCorrecto} = req.body
+        this.answerService.actualizarRespuesta(+id,contenido,esCorrecto).then(data => res.json(data)).catch(error => res.json({error: error.message}))
     }
     
     public eliminarRespuesta = (req: Request, res: Response) => {

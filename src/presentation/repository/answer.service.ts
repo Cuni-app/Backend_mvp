@@ -20,8 +20,17 @@ export class AnswerService{
         return respuestaCreada
     }
 
-    public async actualizarRespuesta(idRespuesta: number, contenido: string, correcto: boolean){
-
+    public async actualizarRespuesta(idRespuesta: number, contenido: string, esCorrecto: boolean){
+        const objRespuesta = await prisma.respuesta.update({
+            where:{
+                id:idRespuesta
+            },
+            data:{
+                contenido,
+                esCorrecto
+            }
+        })
+        return objRespuesta
     }
 
     public async eliminarRespuesta(idRespuesta: number){
