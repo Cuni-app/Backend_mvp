@@ -1,9 +1,10 @@
-import { NextFunction, Response, Router } from 'express';
+import {Router } from 'express';
 import { UserController } from './controller';
 import {AuthMiddleware} from '../middleware/auth'
 import { AuthService } from '../repository/auth.service';
 import { EmailService } from '../repository/email.service';
 import { envs } from '../../config/envs';
+import { UserService } from '../repository/user.service';
 
 
 export class UserRoutes {
@@ -19,7 +20,8 @@ export class UserRoutes {
       envs.SEND_EMAIL
     )
     const authService = new AuthService(emailService)
-    const userController = new UserController(authService)
+    const userService = new UserService()
+    const userController = new UserController(authService,userService)
     
     // Definir las rutas
     // router.use('/api/algo', /*TodoRoutes.routes */ );
@@ -29,7 +31,10 @@ export class UserRoutes {
 
     router.get('/validate-email/:token', userController.validateEmail)
 
-
+    router.post('/seguir/:id', [AuthMiddleware.validarToken], userController.seguir)
+    router.get('/seguidores', [AuthMiddleware.validarToken], userController.getSeguidores)
+    router.get('/seguidos', [AuthMiddleware.validarToken], userController.getSeguidos)
+    router.delete('/noSeguir/:id', [AuthMiddleware.validarToken], userController.dejarDeSeguir)
     return router;
   }
 
