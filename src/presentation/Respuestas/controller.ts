@@ -15,6 +15,7 @@ export class RespuestaController{
 
     public crearRespuesta = (req: Request, res: Response) => {
         const {id_pregunta, contenido, esCorrecto} = req.body
+        this.answerService.crearRespuesta(id_pregunta,contenido,esCorrecto).then(data => res.json(data)).catch(error => res.json({error: error.message}))
     }
 
     public actualizarRespuesta = (req: Request, res: Response) => {
