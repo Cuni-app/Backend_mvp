@@ -5,6 +5,7 @@ import { AuthService } from '../repository/auth.service';
 import { EmailService } from '../repository/email.service';
 import { envs } from '../../config/envs';
 import { UserService } from '../repository/user.service';
+import { AuthController } from './Auth/controller';
 
 
 export class UserRoutes {
@@ -21,15 +22,15 @@ export class UserRoutes {
     )
     const authService = new AuthService(emailService)
     const userService = new UserService()
-    const userController = new UserController(authService,userService)
-    
+    const userController = new UserController(userService)
+    const authController = new AuthController(authService)
     // Definir las rutas
     // router.use('/api/algo', /*TodoRoutes.routes */ );
 
-    router.post('/registro', (req,res) => userController.registrarUsuario(req,res))
-    router.post('/login', (req,res) => userController.loginUsuario(req,res))
+    router.post('/registro', (req,res) => authController.registrarUsuario(req,res))
+    router.post('/login', (req,res) => authController.loginUsuario(req,res))
 
-    router.get('/validate-email/:token', userController.validateEmail)
+    router.get('/validate-email/:token', authController.validateEmail)
 
     router.post('/seguir/:id', [AuthMiddleware.validarToken], userController.seguir)
     router.get('/seguidores', [AuthMiddleware.validarToken], userController.getSeguidores)
