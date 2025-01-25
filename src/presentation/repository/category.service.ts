@@ -24,4 +24,23 @@ export class CategoryService {
         const myCategories = await prisma.categoria.findMany()
         return { categorias: myCategories}
     }
+
+    public async obtenerCategoria(nombreCategoria: string){
+        const miCategoria = await prisma.categoria.findUnique({
+            where:{
+                nombre: nombreCategoria
+            }
+        })
+        if (!miCategoria) throw new Error(`Categoria ${nombreCategoria} no encontrada`)
+        const preguntas = await prisma.pregunta.findMany({
+            where:{
+                id_categoria: miCategoria?.id
+            }
+        })
+        return {
+            nombre: miCategoria?.nombre,
+            duracion: miCategoria?.duracion,
+            preguntas
+        }
+    }
 }

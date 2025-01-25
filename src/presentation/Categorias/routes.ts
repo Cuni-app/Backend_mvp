@@ -12,6 +12,7 @@ export class CategoriaRoutes {
     // Definir las rutas
     router.get("/getAll", (req, res) => categoriaController.getAllCategorias(req,res))
     router.post("/create", (req, res) => categoriaController.crearCategoria(req, res) );
+    router.get("/:nombreCategoria", (req,res) => categoriaController.obtenerCategoria(req,res))
     return router;
   }
 
