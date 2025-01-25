@@ -28,11 +28,14 @@ export class UserController {
     };
 
     public getSeguidos = (req: Request, res: Response) => {
+
+        const {id} = req.query
+
         const user = req.body.user;
         if (isNaN(user.id)) return res.json({ error: "error en el id origen" });
 
         this.userService
-            .getGenteQueSigo(user.id)
+            .getGenteQueSigo(id ? +id : user.id)
             .then((data) => res.status(201).json(data))
             .catch((error) => {
                 res.status(500).json(error);
@@ -40,10 +43,12 @@ export class UserController {
     };
 
     public getSeguidores = (req: Request, res: Response) => {
+        const {id} = req.query
+
         const user = req.body.user;
         if (isNaN(user.id)) return res.json({ error: "error en el id origen" });
         this.userService
-            .getGenteQueMeSigue(user.id)
+            .getGenteQueMeSigue(id ? +id : user.id)
             .then((data) => res.status(201).json(data))
             .catch((error) => res.status(500).json(error));
     };
