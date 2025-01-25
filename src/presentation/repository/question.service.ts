@@ -34,7 +34,17 @@ export class QuestionService{
                 id:idPregunta
             }
         })
-        return pregunta
+        const listaRespuestas = await prisma.respuesta.findMany({
+            where:{
+                id_pregunta:idPregunta
+            }
+        })
+        return {
+            enunciado: pregunta?.enunciado,
+            imagen_url: pregunta?.imagen_url,
+            solucion_url: pregunta?.solucion_url,
+            respuestas: listaRespuestas
+        }
     }
 
     public async editarPregunta(idPregunta: number, caracteristicas: preguntaCaracteristicas){
