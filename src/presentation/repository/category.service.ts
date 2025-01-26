@@ -37,10 +37,11 @@ export class CategoryService {
                 id_categoria: miCategoria?.id
             }
         })
+        const idPreguntas = preguntas.map((pregunta) => pregunta.id)
         return {
             nombre: miCategoria?.nombre,
             duracion: miCategoria?.duracion,
-            preguntas
+            preguntas: idPreguntas
         }
     }
 }
