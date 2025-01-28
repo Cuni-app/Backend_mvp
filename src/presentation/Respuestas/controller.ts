@@ -4,7 +4,6 @@ import { AnswerService } from "../repository/answer.service";
 export class RespuestaController {
     constructor(public readonly answerService: AnswerService) {}
 
-    public getRespuestas = async (req: Request, res: Response) => {};
     public getRespuestasByIdPregunta = async (req: Request, res: Response) => {
         const { id } = req.params;
         if (isNaN(+id)) return res.status(401).json("id is not a number");
