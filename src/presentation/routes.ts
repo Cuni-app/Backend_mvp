@@ -16,9 +16,8 @@ export class AppRoutes {
 
     const router = Router();
     
-    // Definir las rutas
     router.use('/api/user', UserRoutes.routes);
-    router.use('/api/results', ResultadoRoutes.routes);
+    router.use('/api/resultado', ResultadoRoutes.routes);
     router.use('/api/category', CategoriaRoutes.routes);
     router.use('/api/question', PreguntaRoutes.routes);
     router.use('/api/respuesta', RespuestaRoutes.routes);
