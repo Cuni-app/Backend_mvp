@@ -6,6 +6,8 @@ export interface ResultadoObject {
     cantidadCorrectas: number;
     cantidadIncorrectas: number;
     tiempo: number;
+    monedas: number;
+    experiencia: number
 }
 
 export class ResultadosService {
@@ -40,6 +42,7 @@ export class ResultadosService {
                 }
             }
         })
+        this.sumarRecompensaUsuario(userId,category.monedas,category.experiencia)
         if (!resultadoExiste){
             const resultado = await prisma.resultado.create({
                 data: {
@@ -73,5 +76,25 @@ export class ResultadosService {
             if (!resultado) throw new Error("no se pudo crear el resultado");
             return resultado
         }
+        
     };
+
+    private sumarRecompensaUsuario = async (userId: number, monedas: number, experiencia:number) => {
+        const usuarioExiste = await prisma.user.findUnique({
+            where:{
+                id:userId
+            }
+        })
+        if(!usuarioExiste) throw new Error(`El usuario con id ${userId} no existe`)
+        const actualizarDatos = await prisma.user.update({
+            where:{
+                id:userId
+            },
+            data:{
+                monedas: usuarioExiste.monedas+monedas,
+                exp: usuarioExiste.exp+experiencia
+            }
+        })
+        return actualizarDatos
+    }
 }

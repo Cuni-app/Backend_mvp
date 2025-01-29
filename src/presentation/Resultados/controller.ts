@@ -24,6 +24,8 @@ export class ResultadosController{
                 cantidadCorrectas: body.cantidadCorrectas,
                 cantidadIncorrectas: body.cantidadIncorrectas,
                 tiempo: body.tiempo,
+                monedas: body.monedas,
+                experiencia: body.experiencia
             }
             this.resultadosService.crearResultado(id, resultadoObjeto)
                 .then(data => res.status(201).json(data))
