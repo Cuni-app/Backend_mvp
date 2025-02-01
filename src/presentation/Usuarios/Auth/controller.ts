@@ -25,7 +25,7 @@ export class AuthController {
         this.authService
             .loginUser(email, password)
             .then((user) => res.json(user))
-            .catch((error) => res.json({ error: "Error en el login" }));
+            .catch((error) => res.json({ error: error.message }));
     };
 
     public validateEmail = (req: Request, res: Response) => {
