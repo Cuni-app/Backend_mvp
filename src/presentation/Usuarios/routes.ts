@@ -30,6 +30,10 @@ export class UserRoutes {
     router.post('/registro', (req,res) => authController.registrarUsuario(req,res))
     router.post('/login', (req,res) => authController.loginUsuario(req,res))
 
+    router.get('/Codigo', authController.enviarCodigo)
+    router.get('/enviarCodigo', authController.recibirCodigo)
+    router.post('/cambiarPassword', authController.cambiarContrasenia)
+
     router.get('/validate-email/:token', authController.validateEmail)
 
     router.post('/seguir/:id', [AuthMiddleware.validarToken], userController.seguir)

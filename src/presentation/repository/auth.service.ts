@@ -1,6 +1,7 @@
 import { bcryptAdapter } from "../../config/bcrypt.adapter";
 import { envs } from "../../config/envs";
 import { JwtAdapter } from "../../config/jwt.adapter";
+import { myCache } from "../../config/node-cache.adapter";
 import { regularExps } from "../../config/regular-exp";
 import { prisma } from "../../data/postgres";
 import { EmailService } from "./email.service";
@@ -90,15 +91,44 @@ export class AuthService {
             htmlBody: html,
         };
         const isSent = await this.emailService.sendEmail(options);
-        if (!isSent) throw new Error("Error send email");
-        return code;
+        return isSent;
     };
+
     public enviarCodigo = async (email:string) => {
         const codigo = Math.round(Math.random() * (9999 - 1000) + 1000)
+        const objCache = {email}
+
+        const almacenado = myCache.set(codigo, objCache)
+        if (!almacenado) return 'Error al almacenar el codigo'
+
         const trueCode = await this.sendEmailPassCode(codigo, email)
         if (!trueCode) return 'Error al enviar el mail'
-        return 'Se envio el codigo '
+
+        return codigo
     }   
+
+    public recibirCodigo = async (codigo: number) => {
+        const valor  = myCache.take(codigo)
+        if (valor == undefined){
+            return 'no hay codigo';
+        }
+        return {codigo,valor}
+    }
+
+    public cambiarContrasenia = async (email:string, newPassword: string) => {
+        const hashedPassword = bcryptAdapter.hash(newPassword);
+        const user = await prisma.user.update({
+            where: {
+                email: email
+            },
+            data: {
+                password: hashedPassword
+            }
+        })
+        const {password, ...rest} = user
+        return {rest}
+    }
+
     public validateEmail = async (token: string) => {
         const payload = await JwtAdapter.validateToken(token);
         if (!payload) throw new Error("invalid token");

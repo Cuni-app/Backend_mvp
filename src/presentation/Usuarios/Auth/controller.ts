@@ -39,10 +39,25 @@ export class AuthController {
             });
     };
     public enviarCodigo = (req: Request, res: Response) => {
-        const user = req.body.user        
-        this.authService.enviarCodigo( user.email)
+        const email = req.body.email        
+        this.authService.enviarCodigo( email)
             .then(data => res.status(201).json(data))
-        
+            .catch((error) => res.json({ error: error.message }));
+    }
+
+    public recibirCodigo = (req: Request, res: Response) => {
+        const codigo = req.body.codigo
+        this.authService.recibirCodigo(codigo)
+            .then(data => res.status(201).json(data))
+            .catch((error) => res.json({ error: error.message }));
+    }
+
+    public cambiarContrasenia = (req: Request, res: Response) => {
+        const email = req.body.email
+        const newPassword = req.body.password
+        this.authService.cambiarContrasenia(email, newPassword)
+            .then(data => res.status(201).json(data))
+            .catch((error) => res.json({ error: error.message }));
     }
 
 }
