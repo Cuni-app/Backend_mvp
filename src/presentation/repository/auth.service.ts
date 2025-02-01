@@ -79,7 +79,26 @@ export class AuthService {
         if (!isSent) throw new Error("Error send email");
         return true;
     };
-
+    private sendEmailPassCode = async (code: number, email: string) => {
+        const html = `
+        <h1> tu codigo para cambiar tu contraseña</h1>
+        <p>${code}</p>
+        `;
+        const options = {
+            to: email,
+            subject: "Cambio de contraseña",
+            htmlBody: html,
+        };
+        const isSent = await this.emailService.sendEmail(options);
+        if (!isSent) throw new Error("Error send email");
+        return code;
+    };
+    public enviarCodigo = async (email:string) => {
+        const codigo = Math.round(Math.random() * (9999 - 1000) + 1000)
+        const trueCode = await this.sendEmailPassCode(codigo, email)
+        if (!trueCode) return 'Error al enviar el mail'
+        return 'Se envio el codigo '
+    }   
     public validateEmail = async (token: string) => {
         const payload = await JwtAdapter.validateToken(token);
         if (!payload) throw new Error("invalid token");

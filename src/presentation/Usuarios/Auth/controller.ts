@@ -38,4 +38,11 @@ export class AuthController {
                 throw new Error(error);
             });
     };
+    public enviarCodigo = (req: Request, res: Response) => {
+        const user = req.body.user        
+        this.authService.enviarCodigo( user.email)
+            .then(data => res.status(201).json(data))
+        
+    }
+
 }
