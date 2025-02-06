@@ -10,6 +10,6 @@ export class GetSeguidos implements GetSeguidosUseCase{
         private readonly repository: FollowRepository
     ){}
     execute(idSeguidor: number): Promise<Partial<UserEntity>[]> {
-        return this.repository.GetSeguidos(idSeguidor)
+        return this.repository.getSeguidos(idSeguidor)
     }
 }
