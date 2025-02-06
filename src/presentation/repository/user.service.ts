@@ -94,4 +94,40 @@ export class UserService {
             throw new Error("Error al eliminar follow");
         }
     }
+
+    // Funciones para visualización de perfil
+
+    public async visualizarPerfilUsuario(idUsuario: number){
+        try {
+            const datosUsuario = await prisma.user.findUnique({
+                where:{
+                    id:idUsuario
+                }
+            })
+            if(!datosUsuario) throw new Error("Error al obtener el perfil "+idUsuario);
+            const seguidores: number = await prisma.follow.count({
+                where:{
+                    id_seguido: idUsuario,
+                }
+            })
+            const seguidos: number = await prisma.follow.count({
+                where:{
+                    id_seguidor: idUsuario,
+                }
+            })
+            return {
+                nombre:datosUsuario.nombre,
+                premium: datosUsuario.premium,
+                email:datosUsuario.email,
+                nivel:datosUsuario.nivel,
+                exp:datosUsuario.exp,
+                racha:datosUsuario.racha,
+                fechaCreacion:datosUsuario.fechaCreacion,
+                seguidores,
+                seguidos
+            }
+        } catch (error) {
+            throw new Error("Error al obtener el perfil "+idUsuario);
+        }
+    }
 }

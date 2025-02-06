@@ -69,4 +69,13 @@ export class UserController {
                 res.status(500).json(error);
             });
     }
+
+    // Funciones para visualización de perfil
+
+    public obtenerPerfil = (req: Request, res: Response) => {
+        const { id } = req.params;
+        if (isNaN(+id)) return res.status(401).json("id is not a number");
+        this.userService.visualizarPerfilUsuario(+id).then((data) => res.json(data))
+        .catch((error) => res.json({ error: error.message }));
+    }
 }

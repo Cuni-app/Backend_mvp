@@ -36,6 +36,8 @@ export class UserRoutes {
 
     router.get('/validate-email/:token', authController.validateEmail)
 
+    router.get('/obtenerPerfil/:id', userController.obtenerPerfil)
+
     router.post('/seguir/:id', [AuthMiddleware.validarToken], userController.seguir)
     router.get('/seguidores', [AuthMiddleware.validarToken], userController.getSeguidores)
     router.get('/seguidos', [AuthMiddleware.validarToken], userController.getSeguidos)
