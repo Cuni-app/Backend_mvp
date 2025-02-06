@@ -1,4 +1,4 @@
-export class ResultadosEntity {
+export class ResultadoEntity {
     constructor(
         public readonly id: number,
         public readonly tiempo: number,
@@ -32,7 +32,7 @@ export class ResultadosEntity {
         if (isNaN(Number(id_categoria)) || !id_categoria)
             throw "id_categoria es requerido";
 
-        return new ResultadosEntity(
+        return new ResultadoEntity(
             id,
             tiempo,
             calificacion,
