@@ -1,17 +1,54 @@
-import { CreateItemDTO, ItemDatasource, ItemEntity } from "../../domain";
+import { prisma } from "../../data/postgres";
+import { CreateItemDTO, ItemDatasource, ItemEntity, UserDatasource } from "../../domain";
 
 export class ItemDatasourceImpl implements ItemDatasource{
-    create(createItemDTO: CreateItemDTO): Promise<ItemEntity> {
-        throw new Error("Method not implemented.");
+    constructor(
+        private readonly userDatasource: UserDatasource
+    ){}
+    async create(createItemDTO: CreateItemDTO): Promise<ItemEntity> {
+        const item = await prisma.item.create({
+            data: {
+                nombre: createItemDTO.nombre,
+                precio: createItemDTO.precio
+            }
+        })
+        return ItemEntity.fromObject(item)
     }
-    deleteByID(id: number): Promise<ItemEntity> {
-        throw new Error("Method not implemented.");
+    async deleteByID(id: number): Promise<ItemEntity> {
+        const deleted = await prisma.item.delete({
+            where: {
+                id
+            }
+        })
+        return ItemEntity.fromObject(deleted)
     }
-    getItemsByUser(email: string): Promise<ItemEntity[]> {
-        throw new Error("Method not implemented.");
+    async getItemsByUser(email: string): Promise<ItemEntity[]> {
+        const items = await prisma.item.findMany({
+            where: {
+                usuarios: {
+                    every: {
+                        email
+                    }
+                }
+            }
+        })
+        return items.map(i => ItemEntity.fromObject(i))
     }
-    asignarItem(id: number, email: string): Promise<{ name: string; email: string; item: ItemEntity; }> {
-        throw new Error("Method not implemented.");
+    async asignarItem(id: number, email: string): Promise<{ name: string; email: string; item: ItemEntity; }> {
+        const item = await prisma.item.update({
+            where: {
+                id
+            },
+            data: {
+                usuarios: {
+                    connect: {
+                        email
+                    }
+                }
+            }
+        })
+        const user = await this.userDatasource.getByEmail(email)
+        return {email, name: user.nombre, item: ItemEntity.fromObject(item)}
     }
     
 }

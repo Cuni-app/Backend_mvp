@@ -7,7 +7,7 @@ export class ResultadoRepositoryImpl implements ResultadoRepository{
     create(createResultadoDTO: CreateResultadoDTO): Promise<ResultadoEntity> {
         return this.dataSource.create(createResultadoDTO)
     }
-    getByuserId(UserId: number): Promise<ResultadoEntity[]> {
-        return this.dataSource.getByuserId(UserId)
+    getByUserId(UserId: number): Promise<ResultadoEntity[]> {
+        return this.dataSource.getByUserId(UserId)
     }
 }

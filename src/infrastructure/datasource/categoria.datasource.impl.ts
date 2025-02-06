@@ -1,23 +1,53 @@
-import { CategoriaDatasource, CategoriaEntity, CreateCategoriaDTO, UpdateCategoriaDTO } from "../../domain";
+import { prisma } from "../../data/postgres";
+import { CategoriaDatasource, CategoriaEntity, CreateCategoriaDTO, CustomError, UpdateCategoriaDTO } from "../../domain";
 
 export class CategoriaDatasourceImpl implements CategoriaDatasource{
-    create(createCategoriaDTO: CreateCategoriaDTO): Promise<CategoriaEntity> {
-        throw new Error("Method not implemented.");
+    async create(createCategoriaDTO: CreateCategoriaDTO): Promise<CategoriaEntity> {
+        const categoria = await prisma.categoria.create({
+            data: createCategoriaDTO
+        })
+        return CategoriaEntity.fromObject(categoria)
     }
-    getAll(): Promise<CategoriaEntity[]> {
-        throw new Error("Method not implemented.");
+    async getAll(): Promise<CategoriaEntity[]> {
+        const categorias = await prisma.categoria.findMany()
+        return categorias.map(c => CategoriaEntity.fromObject(c))
     }
-    findById(id: number): Promise<CategoriaEntity> {
-        throw new Error("Method not implemented.");
+    async findById(id: number): Promise<CategoriaEntity> {
+        const categoria = await prisma.categoria.findUnique({
+            where: {
+                id
+            }
+        })
+        if (!categoria) throw new CustomError(`No se encontro categoria con ID: ${id}`, 404);
+        return CategoriaEntity.fromObject(categoria)
     }
-    findByName(name: string): Promise<CategoriaEntity> {
-        throw new Error("Method not implemented.");
+    async findByName(name: string): Promise<CategoriaEntity> {
+        const categoria = await prisma.categoria.findUnique({
+            where: {
+                nombre: name
+            }
+        })
+        if (!categoria) throw new CustomError(`No se encontro categoria con Nombre: ${name}`, 404);
+        return CategoriaEntity.fromObject(categoria)
     }
-    updateById(updateCategoriaDTO: UpdateCategoriaDTO): Promise<CategoriaEntity> {
-        throw new Error("Method not implemented.");
+    async updateById(updateCategoriaDTO: UpdateCategoriaDTO): Promise<CategoriaEntity> {
+        await this.findById(updateCategoriaDTO.id)
+        const updateCat = await prisma.categoria.update({
+            where: {
+                id: updateCategoriaDTO.id
+            },
+            data: updateCategoriaDTO!.values
+        })
+        return CategoriaEntity.fromObject(updateCat)
     }
-    deleteById(id: number): Promise<CategoriaEntity> {
-        throw new Error("Method not implemented.");
+    async deleteById(id: number): Promise<CategoriaEntity> {
+        await this.findById(id)
+        const deleted = await prisma.categoria.delete({
+            where: {
+                id: id
+            }
+        })
+        return CategoriaEntity.fromObject(deleted)
     }
     
 }
