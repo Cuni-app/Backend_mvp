@@ -3,8 +3,8 @@ import { ItemEntity } from "../entities";
 import { UserEntity } from "../entities/user.entity";
 
 export abstract class ItemDatasource {
-    abstract crearItem(createItemDTO: CreateItemDTO): Promise<ItemEntity>;
-    abstract deleteItemByID(id: number): Promise<ItemEntity>;
+    abstract create(createItemDTO: CreateItemDTO): Promise<ItemEntity>;
+    abstract deleteByID(id: number): Promise<ItemEntity>;
     abstract getItemsByUser(email: string): Promise<ItemEntity[]>;
     abstract asignarItem(
         id: number,
