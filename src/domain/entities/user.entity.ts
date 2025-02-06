@@ -3,7 +3,7 @@ export class UserEntity {
         public readonly id: number,
         public readonly nombre: string,
         public readonly email: string,
-        public readonly password: string,
+        public readonly password?: string,
         public readonly validatedEmail: boolean = false,
         public readonly premium: boolean = false,
         public readonly nivel: number = 0,
@@ -35,9 +35,8 @@ export class UserEntity {
         if (!email) throw "Es requerido el email";
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
             throw "El email es requerido y debe tener un formato válido.";
-        if (!password || typeof password !== "string" || password.length < 6)
-            throw "El password es requerido y debe tener al menos 6 caracteres.";
-
+        if (password && (typeof password !== "string" || password.length < 6)) 
+            throw "El password debe ser una cadena de texto de al menos 6 caracteres.";
         if (!validatedEmail && typeof validatedEmail !== "boolean")
             throw "El campo validatedEmail debe ser un booleano.";
         if (!premium && typeof premium !== "boolean")

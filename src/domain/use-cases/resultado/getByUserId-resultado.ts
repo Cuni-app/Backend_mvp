@@ -10,6 +10,6 @@ export class GetResultadosByUser implements GetResultadoByUserIdUseCase{
         private readonly repository: ResultadoRepository
     ){}
     execute(UserId: number): Promise<ResultadoEntity[]> {
-        return this.repository.getByuserId(UserId)
+        return this.repository.getByUserId(UserId)
     }
 }
