@@ -1,4 +1,4 @@
-export class UpdateRespuetaDTO {
+export class UpdateRespuestaDTO {
     private constructor(
         public readonly id: number,
         public readonly esCorrecto?: boolean,
@@ -13,7 +13,7 @@ export class UpdateRespuetaDTO {
     }
     static create(props: {
         [key: string]: any;
-    }): [string?, UpdateRespuetaDTO?] {
+    }): [string?, UpdateRespuestaDTO?] {
         const { id, esCorrecto, contenido, id_pregunta } = props;
 
         if (!id) return ["El id es obligatorio"];
@@ -21,7 +21,7 @@ export class UpdateRespuetaDTO {
         if (typeof contenido !== "string") return ["contenido debe ser string"]
         return [
             undefined,
-            new UpdateRespuetaDTO(id, esCorrecto, contenido),
+            new UpdateRespuestaDTO(id, esCorrecto, contenido),
         ];
     }
 }
