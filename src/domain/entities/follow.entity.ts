@@ -1,4 +1,4 @@
-export class followEntity{
+export class FollowEntity{
     constructor(
         public readonly id: number,
         public readonly idSeguidor: number,
@@ -10,5 +10,6 @@ export class followEntity{
         if (isNaN(Number(id)) || !id) throw 'Id es requerido'
         if (isNaN(Number(idSeguido)) || !idSeguido) throw 'IdSeguido es requerido'
         if (isNaN(Number(idSeguidor)) || !idSeguidor) throw 'IdSeguidor es requerido'
+        return new FollowEntity(id, idSeguidor, idSeguido)
     }
 } 
