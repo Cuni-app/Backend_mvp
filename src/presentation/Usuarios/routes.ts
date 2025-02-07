@@ -3,6 +3,7 @@ import { EmailService } from '../services/email.service';
 import { envs } from '../../config/envs';
 import { UserController } from './controller';
 import { UserDatasourceImpl, UserRepositoryImpl } from '../../infrastructure';
+import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
 
 
 export class UserRoutes {
@@ -11,16 +12,8 @@ export class UserRoutes {
   static get routes(): Router {
 
     const router = Router();
-    const emailService = new EmailService(
-      envs.MAILER_SERVICE,
-      envs.MAILER_EMAIL,
-      envs.MAILER_SECRET_KEY,
-      envs.SEND_EMAIL
-    )
-    
-    const userDatasource = new UserDatasourceImpl(emailService)
-    const userRepository = new UserRepositoryImpl(userDatasource)
-    const userController = new UserController(userRepository)
+    const repository = DIContainerRepository.getUserRepository()
+    const userController = new UserController(repository)
     // Definir las rutas
     // router.use('/api/algo', /*TodoRoutes.routes */ );
 

@@ -4,21 +4,14 @@ import { FollowDatasourceImpl, FollowRepositoryImpl, UserDatasourceImpl } from "
 import { envs } from "../../config";
 import { EmailService } from '../services/email.service';
 import { FollowController } from "./controller";
+import { DIContainerRepository } from "../../infrastructure/DI/repositoryContainer";
 
 export class FollowRoutes{
 
     static get routes(): Router{
         const router = Router();
-        const emailService = new EmailService(
-            envs.MAILER_SERVICE,
-            envs.MAILER_EMAIL,
-            envs.MAILER_SECRET_KEY,
-            envs.SEND_EMAIL
-        )
-        const userDatesource = new UserDatasourceImpl(emailService)
-        const followDatasource = new FollowDatasourceImpl(userDatesource)
-        const followRepository = new FollowRepositoryImpl(followDatasource)
-        const controller = new FollowController(followRepository)
+        const repository = DIContainerRepository.getFollowRepository()
+        const controller = new FollowController(repository)
         router.post('/:id', [AuthMiddleware.validarToken], controller.seguir)
         router.get('/seguidores', [AuthMiddleware.validarToken], controller.getSeguidores)
         router.get('/seguidos', [AuthMiddleware.validarToken], controller.getSeguidos)

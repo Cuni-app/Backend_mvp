@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { RespuestaController } from './controller';
 import { PreguntaDatasourceImpl, RespuestaDatasourceImpl, RespuestaRepositoryImpl } from '../../infrastructure';
+import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
 
 
 
@@ -11,10 +12,8 @@ export class RespuestaRoutes {
   static get routes(): Router {
     const router = Router();
 
-    const preguntadatasource = new PreguntaDatasourceImpl()
-    const respuestaDatasource = new RespuestaDatasourceImpl(preguntadatasource)
-    const respuestaRepository = new RespuestaRepositoryImpl(respuestaDatasource)
-    const controller = new RespuestaController(respuestaRepository)
+    const repository = DIContainerRepository.getRespuestaRepository()
+    const controller = new RespuestaController(repository)
     // Definir las rutas
     // router.use('/api/algo', /*TodoRoutes.routes */ );
     router.get("/pregunta/:id",  controller.getRespuestasByIdPregunta)
