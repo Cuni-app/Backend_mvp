@@ -97,7 +97,7 @@ export class UserService {
 
     // Funciones para visualización de perfil
 
-    public async visualizarPerfilUsuario(idUsuario: number){
+    public async visualizarPerfilUsuario(idUsuario: number, idClient:number){
         try {
             const datosUsuario = await prisma.user.findUnique({
                 where:{
@@ -116,6 +116,7 @@ export class UserService {
                 }
             })
             return {
+                perfilPropio: idUsuario===idClient,
                 nombre:datosUsuario.nombre,
                 premium: datosUsuario.premium,
                 email:datosUsuario.email,

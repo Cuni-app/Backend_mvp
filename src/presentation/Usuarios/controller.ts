@@ -74,8 +74,9 @@ export class UserController {
 
     public obtenerPerfil = (req: Request, res: Response) => {
         const { id } = req.params;
+        const idClient = req.body.user.id
         if (isNaN(+id)) return res.status(401).json("id is not a number");
-        this.userService.visualizarPerfilUsuario(+id).then((data) => res.json(data))
+        this.userService.visualizarPerfilUsuario(+id,idClient).then((data) => res.json(data))
         .catch((error) => res.json({ error: error.message }));
     }
 }
