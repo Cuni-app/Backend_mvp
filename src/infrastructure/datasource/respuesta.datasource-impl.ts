@@ -3,7 +3,7 @@ import { CreateRespuestaDTO, CustomError, PreguntaDatasource, RespuestaDatasourc
 
 export class RespuestaDatasourceImpl implements RespuestaDatasource{
     constructor(
-        private userDatasource: PreguntaDatasource
+        private preguntaDatasource: PreguntaDatasource
     ){}
     async create(createRespuestaDTO: CreateRespuestaDTO): Promise<RespuestaEntity> {
         const respuesta = await prisma.respuesta.create({
@@ -45,7 +45,7 @@ export class RespuestaDatasourceImpl implements RespuestaDatasource{
     }
 
     async getByIdPregunta(idPregunta: number): Promise<RespuestaEntity[]> {
-        await this.userDatasource.getById(idPregunta)
+        await this.preguntaDatasource.getById(idPregunta)
         const respuestas = await prisma.respuesta.findMany({
             where: {
                 pregunta: {

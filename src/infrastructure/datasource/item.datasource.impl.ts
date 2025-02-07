@@ -35,6 +35,7 @@ export class ItemDatasourceImpl implements ItemDatasource{
         return items.map(i => ItemEntity.fromObject(i))
     }
     async asignarItem(id: number, email: string): Promise<{ name: string; email: string; item: ItemEntity; }> {
+        const user = await this.userDatasource.getByEmail(email)
         const item = await prisma.item.update({
             where: {
                 id
@@ -47,7 +48,6 @@ export class ItemDatasourceImpl implements ItemDatasource{
                 }
             }
         })
-        const user = await this.userDatasource.getByEmail(email)
         return {email, name: user.nombre, item: ItemEntity.fromObject(item)}
     }
     

@@ -5,6 +5,7 @@ import { PreguntaRoutes } from './Preguntas/routes';
 import { ResultadoRoutes } from './Resultados/routes';
 import { RespuestaRoutes } from './Respuestas/routes';
 import { ItemRoutes } from './Items/routes';
+import { FollowRoutes } from './Follows/routes';
 
 
 
@@ -22,6 +23,7 @@ export class AppRoutes {
     router.use('/api/question', PreguntaRoutes.routes);
     router.use('/api/respuesta', RespuestaRoutes.routes);
     router.use('/api/items', ItemRoutes.routes);
+    router.use('/api/follow', FollowRoutes.routes);
     
     return router;
   }

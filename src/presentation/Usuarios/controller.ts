@@ -1,81 +1,73 @@
 import { Request, Response } from "express";
-import { AuthService } from "../repository/auth.service";
-import { error } from "console";
-import { UserService } from "../repository/user.service";
+import { CambiarContrasenia, CreateUserDTO, CustomError, EnviarCodigo, LoginUser, LoginUserDto, RegistroUsuario, UserRepository, ValidarCodigo } from "../../domain";
+import { ValidateEmail } from '../../domain/use-cases/user/validateEmail-user';
 
 export class UserController {
     constructor(
-        private readonly userService: UserService
+        private readonly userRepository: UserRepository
     ) {}
+    private handleError = (res: Response, error: unknown) => {
+        if (error instanceof CustomError){
+            res.status(error.statusCode).json({error: error.message})
+            return;
+        }
+        res.status(500).json({error: "Internal server error"})
+    }
+    public registrarUsuario = (req: Request, res: Response) => {
+        const [error, createUserDto] = CreateUserDTO.create(req.body);
 
-    
-    public seguir = (req: Request, res: Response) => {
-        const UserOrigen = req.body.user;
-        if (isNaN(UserOrigen.id)) res.json({ error: "error en el id origen" });
-
-        const idDestino = req.params.id;
-
-        if (isNaN(+idDestino))
-            return res.json({ error: "error en el id destino" });
-        if (+UserOrigen.id === +idDestino) return res.json({ error: "no te puedes seguir a ti mismo" });
-        
-        this.userService
-            .seguir(UserOrigen.id, +idDestino)
-            .then((data) => res.json(data))
-            .catch((error) => {
-                res.status(500).json(error);
-            });
+        if (error) return res.status(400).json(error);
+        new RegistroUsuario(this.userRepository)
+            .execute(createUserDto!)
+            .then(obj => res.status(201).json(obj))
+            .catch(error => this.handleError(res, error))
     };
 
-    public getSeguidos = (req: Request, res: Response) => {
-
-        const {id} = req.query
-
-        const user = req.body.user;
-        if (isNaN(user.id)) return res.json({ error: "error en el id origen" });
-
-        this.userService
-            .getGenteQueSigo(id ? +id : user.id)
-            .then((data) => res.status(201).json(data))
-            .catch((error) => {
-                res.status(500).json(error);
-            });
+    public loginUsuario = (req: Request, res: Response) => {
+        const [error, loginUserDto] = LoginUserDto.create(req.body);
+        if (error) return res.status(400).json(error);
+        new LoginUser(this.userRepository)
+            .execute(loginUserDto!)
+            .then(obj => res.status(201).json(obj))
+            .catch(error => this.handleError(res, error))
     };
 
-    public getSeguidores = (req: Request, res: Response) => {
-        const {id} = req.query
+    public validateEmail = (req: Request, res: Response) => {
+        const { token } = req.params;
 
-        const user = req.body.user;
-        if (isNaN(user.id)) return res.json({ error: "error en el id origen" });
-        this.userService
-            .getGenteQueMeSigue(id ? +id : user.id)
-            .then((data) => res.status(201).json(data))
-            .catch((error) => res.status(500).json(error));
+        new ValidateEmail(this.userRepository)
+            .execute(token)
+            .then(obj => res.status(201).json(obj))
+            .catch(error => this.handleError(res, error))
     };
 
-    public dejarDeSeguir = (req: Request, res: Response) => {
-        const UserOrigen = req.body.user;
-        if (isNaN(UserOrigen.id)) res.json({ error: "error en el id origen" });
-
-        const idDestino = req.params.id;
-
-        if (isNaN(+idDestino))
-            return res.json({ error: "error en el id destino" });
-
-        this.userService
-            .dejarDeSeguir(UserOrigen.id, +idDestino)
-            .then((data) => res.json(data))
-            .catch((error) => {
-                res.status(500).json(error);
-            });
+    public enviarCodigo = (req: Request, res: Response) => {
+        const email = req.body.email        
+        new EnviarCodigo(this.userRepository)
+            .execute(email)
+            .then(obj => res.status(201).json(obj))
+            .catch(error => this.handleError(res, error))
     }
 
-    // Funciones para visualización de perfil
-
-    public obtenerPerfil = (req: Request, res: Response) => {
-        const { id } = req.params;
-        if (isNaN(+id)) return res.status(401).json("id is not a number");
-        this.userService.visualizarPerfilUsuario(+id).then((data) => res.json(data))
-        .catch((error) => res.json({ error: error.message }));
+    public validarCodigo = (req: Request, res: Response) => {
+        const codigo = req.body.codigo
+        return new ValidarCodigo(this.userRepository)
+            .execute(codigo)
     }
+
+    public cambiarContrasenia = (req: Request, res: Response) => {
+        const email = req.body.email
+        const newPassword = req.body.password
+        new CambiarContrasenia(this.userRepository)
+            .execute(email, newPassword)
+            .then(obj => res.status(201).json(obj))
+            .catch(error => this.handleError(res, error))
+    }
+
+    // public obtenerPerfil = (req: Request, res: Response) => {
+    //     const { id } = req.params;
+    //     if (isNaN(+id)) return res.status(401).json("id is not a number");
+    //     this.userService.visualizarPerfilUsuario(+id).then((data) => res.json(data))
+    //     .catch((error) => res.json({ error: error.message }));
+    // }
 }

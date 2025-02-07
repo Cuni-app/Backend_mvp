@@ -1,7 +1,7 @@
 import { prisma } from "../../data/postgres";
 import { CreateFollowDTO, FollowDatasource, FollowEntity, UserDatasource, UserEntity } from "../../domain";
 
-export class FollowDatadsourceImpl implements FollowDatasource{
+export class FollowDatasourceImpl implements FollowDatasource{
     constructor(
         private readonly userDatasource: UserDatasource
     ){}

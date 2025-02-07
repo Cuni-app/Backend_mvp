@@ -6,7 +6,7 @@ export interface CreateCategoriaUseCase{
     execute(dto: CreateCategoriaDTO): Promise<CategoriaEntity>
 }
 
-export class createCategoria implements CreateCategoriaUseCase{
+export class CreateCategoria implements CreateCategoriaUseCase{
     constructor(
         private readonly repository: CategoriaRepository
     ){}

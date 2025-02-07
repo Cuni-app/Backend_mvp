@@ -1,28 +1,62 @@
 import { Request, Response } from "express";
-import { CategoryService } from "../repository/category.service";
+import { CategoriaRepository, CreateCategoria, CreateCategoriaDTO, CustomError, DeleteCategoriaById, FindCategoriaById, FindCategoriaByName, GetAllCategoria, UpdateCategoriaById, UpdateCategoriaDTO } from "../../domain";
 
 export class CategoriaController {
-    constructor(private readonly categoryService: CategoryService) {}
+    constructor(private readonly categoriaRepository: CategoriaRepository) {}
+    private handleError = (res: Response, error: unknown) => {
+        if (error instanceof CustomError){
+            res.status(error.statusCode).json({error: error.message})
+            return;
+        }
+        res.status(500).json({error: "Internal server error"})
+    }
 
     public crearCategoria = (req: Request, res: Response) => {
-        const { nombre, duracion } = req.body;
+        const [error, createCategoriaDto] = CreateCategoriaDTO.create(req.body);
+        if (error) return res.status(400).json(error);
 
-        this.categoryService
-            .registrarCategoria(nombre, duracion)
-            .then((data) => res.json(data))
-            .catch((error) => res.json({ error: error.message }));
+        new CreateCategoria(this.categoriaRepository)
+            .execute(createCategoriaDto!)
+            .then(cat => res.status(201).json(cat))
+            .catch(error => this.handleError(res, error))
     };
     public getAllCategorias = (req: Request, res: Response) => {
-        this.categoryService
-            .obtenerCategorias()
-            .then((data) => res.json(data))
-            .catch((error) => res.json({ error: error.message }));
+        new GetAllCategoria(this.categoriaRepository)
+            .execute()
+            .then(cat => res.json(cat))
+            .catch(error => this.handleError(res, error))
     };
-    public obtenerCategoria = (req: Request, res: Response) => {
+    public obtenerCategoriaPorNombre = (req: Request, res: Response) => {
         const { nombreCategoria } = req.params;
-        this.categoryService
-            .obtenerCategoria(nombreCategoria)
-            .then((data) => res.json(data))
-            .catch((error) => res.json({ error: error.message }));
+        new FindCategoriaByName(this.categoriaRepository)
+            .execute(nombreCategoria)
+            .then(cat => res.json(cat))
+            .catch(error => this.handleError(res, error))
     };
+    public obtenerCategoriaPorId = (req: Request, res: Response) => {
+        const { id } = req.params;
+        new FindCategoriaById(this.categoriaRepository)
+            .execute(Number(id))
+            .then(cat => res.json(cat))
+            .catch(error => this.handleError(res, error))
+    };
+    public deleteCategoriaById = (req: Request, res: Response) => {
+        const { id } = req.params;
+        new DeleteCategoriaById(this.categoriaRepository)
+            .execute(Number(id))
+            .then(cat => res.json(cat))
+            .catch(error => this.handleError(res, error))
+    }
+    public updateCategoriabyId = (req: Request, res: Response) => {
+        const id = +req.params.id; 
+        const [error, updateCategoriaDto] = UpdateCategoriaDTO.create({
+            ...req.body,
+            id,
+        });
+        if (error) return res.status(400).json({ error });
+        new UpdateCategoriaById(this.categoriaRepository)
+            .execute(updateCategoriaDto!)
+            .then(cat => res.json(cat))
+            .catch(error => this.handleError(res, error))
+    }
 }

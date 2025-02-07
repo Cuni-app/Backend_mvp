@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { PreguntasController } from './controller';
-import { QuestionService } from '../repository/question.service';
+import { PreguntaDatasourceImpl, PreguntaRepositoryImpl } from '../../infrastructure';
 
 
 
@@ -11,8 +11,9 @@ export class PreguntaRoutes {
   static get routes(): Router {
 
     const router = Router();
-    const questionService: QuestionService = new QuestionService()
-    const controller = new PreguntasController(questionService)
+    const preguntaDatasource = new PreguntaDatasourceImpl()
+    const preguntaRepository = new PreguntaRepositoryImpl(preguntaDatasource)
+    const controller = new PreguntasController(preguntaRepository)
     
     // Definir las rutas
     // router.use('/api/algo', /*TodoRoutes.routes */ );

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { RespuestaController } from './controller';
-import { AnswerService } from '../repository/answer.service';
+import { PreguntaDatasourceImpl, RespuestaDatasourceImpl, RespuestaRepositoryImpl } from '../../infrastructure';
 
 
 
@@ -9,17 +9,18 @@ export class RespuestaRoutes {
 
 
   static get routes(): Router {
-
-    const controller = new RespuestaController(new AnswerService())
-
     const router = Router();
-    
+
+    const preguntadatasource = new PreguntaDatasourceImpl()
+    const respuestaDatasource = new RespuestaDatasourceImpl(preguntadatasource)
+    const respuestaRepository = new RespuestaRepositoryImpl(respuestaDatasource)
+    const controller = new RespuestaController(respuestaRepository)
     // Definir las rutas
     // router.use('/api/algo', /*TodoRoutes.routes */ );
-    router.get("/pregunta/:id", (req,res) => controller.getRespuestasByIdPregunta(req,res))
-    router.post("/",(req,res) => controller.crearRespuesta(req,res))
-    router.put("/:id",(req,res) => controller.actualizarRespuesta(req,res))
-    router.delete("/:id",(req,res) => controller.eliminarRespuesta(req,res))
+    router.get("/pregunta/:id",  controller.getRespuestasByIdPregunta)
+    router.post("/", controller.crearRespuesta)
+    router.put("/:id", controller.actualizarRespuesta)
+    router.delete("/:id", controller.eliminarRespuesta)
     return router;
   }
 
