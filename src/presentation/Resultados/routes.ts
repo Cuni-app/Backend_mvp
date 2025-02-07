@@ -3,7 +3,7 @@ import { ResultadosController } from './controller';
 import { AuthMiddleware } from '../middleware/auth';
 import { CategoriaDatasourceImpl, ResultadoDatasourceImpl, ResultadoRepositoryImpl, UserDatasourceImpl } from '../../infrastructure';
 import { envs } from '../../config';
-import { EmailService } from '../repository/email.service';
+import { EmailService } from '../services/email.service';
 
 
 

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { AuthMiddleware } from '../middleware/auth';
 import { ItemDatasourceImpl, ItemRepositoryImpl, UserDatasourceImpl } from '../../infrastructure';
 import { envs } from '../../config';
-import { EmailService } from '../repository/email.service';
+import { EmailService } from '../services/email.service';
 import { ItemController } from './controller';
 
 

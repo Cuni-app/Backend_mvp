@@ -1,5 +1,5 @@
 import {Router } from 'express';
-import { EmailService } from '../repository/email.service';
+import { EmailService } from '../services/email.service';
 import { envs } from '../../config/envs';
 import { UserController } from './controller';
 import { UserDatasourceImpl, UserRepositoryImpl } from '../../infrastructure';
