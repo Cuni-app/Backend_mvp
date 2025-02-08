@@ -4,7 +4,8 @@ import { JwtAdapter } from "../../config/jwt.adapter";
 import { myCache } from "../../config/node-cache.adapter";
 import { prisma } from "../../data/postgres";
 import { CreateUserDTO, CustomError, LoginUserDto, UserDatasource, UserEntity } from "../../domain";
-import { EmailService } from '../../presentation/repository/email.service';
+import { EmailService } from "../../presentation/services/email.service";
+
 
 export class UserDatasourceImpl implements UserDatasource{
     constructor(
