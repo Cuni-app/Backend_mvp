@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CambiarContrasenia, CreateUserDTO, CustomError, EnviarCodigo, LoginUser, LoginUserDto, RegistroUsuario, UserRepository, ValidarCodigo } from "../../domain";
+import { CambiarContrasenia, CreateUserDTO, CustomError, EnviarCodigo, LoginUser, LoginUserDto, RegistroUsuario, UpdateUserDTO, UserRepository, ValidarCodigo } from "../../domain";
 import { ValidateEmail } from '../../domain/use-cases/user/validateEmail-user';
 
 export class UserController {
@@ -42,7 +42,8 @@ export class UserController {
     };
 
     public enviarCodigo = (req: Request, res: Response) => {
-        const email = req.body.email        
+        const email = req.body.email
+        if (!email) return res.status(404).json('No se proporciono ningun email')        
         new EnviarCodigo(this.userRepository)
             .execute(email)
             .then(obj => res.status(201).json(obj))
@@ -51,15 +52,25 @@ export class UserController {
 
     public validarCodigo = (req: Request, res: Response) => {
         const codigo = req.body.codigo
-        return new ValidarCodigo(this.userRepository)
-            .execute(codigo)
+        try{
+            const valor =  new ValidarCodigo(this.userRepository)
+                .execute(codigo)
+            res.status(201).json(valor)
+        } catch (error) {
+            this.handleError(res, error)
+        }
     }
 
     public cambiarContrasenia = (req: Request, res: Response) => {
         const email = req.body.email
-        const newPassword = req.body.password
+        const newPassword = req.body.password + ''
+        const [error, updateUserDto] = UpdateUserDTO.create({
+            email,
+            password: newPassword
+        })
+        if (error) return res.status(400).json(error);
         new CambiarContrasenia(this.userRepository)
-            .execute(email, newPassword)
+            .execute(updateUserDto!)
             .then(obj => res.status(201).json(obj))
             .catch(error => this.handleError(res, error))
     }

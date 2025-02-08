@@ -1,4 +1,4 @@
-import { CreateUserDTO, LoginUserDto, UserDatasource, UserEntity, UserRepository } from "../../domain";
+import { CreateUserDTO, LoginUserDto, UpdateUserDTO, UserDatasource, UserEntity, UserRepository } from "../../domain";
 
 export class UserRepositoryImpl implements UserRepository{
     constructor(
@@ -25,7 +25,7 @@ export class UserRepositoryImpl implements UserRepository{
     validarCodigo(codigo: number): boolean {
         return this.dataSource.validarCodigo(codigo)
     }
-    cambiarContrasenia(email: string, newPassword: string): Promise<Partial<UserEntity>> {
-        return this.dataSource.cambiarContrasenia(email, newPassword)
+    cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>> {
+        return this.dataSource.cambiarContrasenia(updateUserDto)
     }
 }

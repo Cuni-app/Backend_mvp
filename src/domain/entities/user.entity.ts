@@ -3,13 +3,13 @@ export class UserEntity {
         public readonly id: number,
         public readonly nombre: string,
         public readonly email: string,
-        public readonly password?: string,
         public readonly validatedEmail: boolean = false,
         public readonly premium: boolean = false,
         public readonly nivel: number = 0,
         public readonly exp: number = 0,
         public readonly racha: number = 0,
-        public readonly monedas: number = 0
+        public readonly monedas: number = 0,
+        public readonly password?: string,
     ) {}
 
     get isValidated() {
@@ -54,7 +54,6 @@ export class UserEntity {
             id,
             nombre,
             email,
-            password,
             validatedEmail,
             premium,
             nivel,

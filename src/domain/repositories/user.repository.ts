@@ -1,4 +1,4 @@
-import { CreateUserDTO, LoginUserDto } from "../dtos";
+import { CreateUserDTO, LoginUserDto, UpdateUserDTO } from "../dtos";
 import { UserEntity } from "../entities";
 
 export abstract class UserRepository{
@@ -9,6 +9,6 @@ export abstract class UserRepository{
     abstract validateEmail(token:string): Promise<boolean>;
     abstract enviarCodigo(email: string): Promise<boolean>;
     abstract validarCodigo(codigo: number): boolean;
-    abstract cambiarContrasenia(email: string, newPassword: string): Promise<Partial<UserEntity>>
+    abstract cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>>
 
 }

@@ -3,8 +3,8 @@ import { envs } from "../../config/envs";
 import { JwtAdapter } from "../../config/jwt.adapter";
 import { myCache } from "../../config/node-cache.adapter";
 import { prisma } from "../../data/postgres";
-import { CreateUserDTO, CustomError, LoginUserDto, UserDatasource, UserEntity } from "../../domain";
-import { EmailService } from "../../presentation/services/email.service";
+import { CreateUserDTO, CustomError, LoginUserDto, UpdateUserDTO, UserDatasource, UserEntity } from "../../domain";
+import { EmailService } from '../../presentation/services/email.service';
 
 
 export class UserDatasourceImpl implements UserDatasource{
@@ -33,7 +33,7 @@ export class UserDatasourceImpl implements UserDatasource{
 
     async registro(createUserDTO: CreateUserDTO): Promise<{ user: UserEntity; token: string; }> {
         const hashedPassword = bcryptAdapter.hash(createUserDTO.password);
-        const usuario = await prisma.user.create({
+        const {password, ...usuario} = await prisma.user.create({
             data: {
                 email: createUserDTO.email,
                 nombre: createUserDTO.nombre,
@@ -71,7 +71,7 @@ export class UserDatasourceImpl implements UserDatasource{
         if (!payload) throw new Error("invalid token");
         const { email } = payload as { email: string };
 
-        if (!email) throw new Error('Email not in token');
+        if (!email) throw new CustomError('Email not in token', 404);
 
         const user = await prisma.user.update({
             where: {
@@ -82,13 +82,14 @@ export class UserDatasourceImpl implements UserDatasource{
             }
         })
 
-        if (!user) throw new Error('email not exist');
+        if (!user) throw new CustomError('User not exist', 404);
 
         return true
     }
 
     async enviarCodigo(email: string): Promise<boolean> {
         const codigo = Math.round(Math.random() * (9999 - 1000) + 1000)
+        console.log(codigo);
         const objCache = {email}
 
         const almacenado = myCache.set(codigo, objCache)
@@ -108,8 +109,10 @@ export class UserDatasourceImpl implements UserDatasource{
         return true
     }
 
-    async cambiarContrasenia(email: string, newPassword: string): Promise<Partial<UserEntity>> {
-        const hashedPassword = bcryptAdapter.hash(newPassword);
+    async cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>> {
+        
+        const hashedPassword = bcryptAdapter.hash(updateUserDto.password!);
+        const email = updateUserDto.email
         const user = await prisma.user.update({
             where: {
                 email: email

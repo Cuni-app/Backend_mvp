@@ -21,8 +21,8 @@ export class UserRoutes {
     router.post('/login', userController.loginUsuario)
     router.get('/validate-email/:token', userController.validateEmail)
 
-    router.get('/Codigo', userController.enviarCodigo)
-    router.get('/enviarCodigo', userController.validarCodigo)
+    router.get('/codigo', userController.enviarCodigo)
+    router.get('/validarCodigo', userController.validarCodigo)
     router.post('/cambiarPassword', userController.cambiarContrasenia)
 
 

@@ -4,13 +4,13 @@ export class UpdateUserDTO {
     private constructor(
         public readonly nombre?: string,
         public readonly email?: string,
-        public readonly password?: string,
         public readonly validatedEmail?: boolean,
         public readonly premium?: boolean,
         public readonly nivel?: number,
         public readonly exp?: number,
         public readonly racha?: number,
-        public readonly monedas?: number
+        public readonly monedas?: number,
+        public readonly password?: string,
     ) {}
     get values() {
         const returnObj: { [key: string]: any } = {};
@@ -56,13 +56,13 @@ export class UpdateUserDTO {
             new UpdateUserDTO(
                 nombre,
                 email,
-                password,
                 validatedEmail,
                 premium,
                 nivel,
                 exp,
                 racha,
-                monedas
+                monedas,
+                password
             ),
         ];
     }
