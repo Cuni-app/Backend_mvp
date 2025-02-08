@@ -36,7 +36,7 @@ export class FollowDatasourceImpl implements FollowDatasource{
             seguidores.map(f => this.userDatasource.getById(f.id_seguidor))
         )
         const usersArr = users.map(u => {
-            const {password, ...rest} = u
+            const {password,monedas,exp,email,validatedEmail,id, ...rest} = u
             return rest
         })
         return usersArr.map(u => UserEntity.fromObject(u))
@@ -51,7 +51,7 @@ export class FollowDatasourceImpl implements FollowDatasource{
             seguidos.map(f => this.userDatasource.getById(f.id_seguido))
         )
         const usersArr = users.map(u => {
-            const {password, ...rest} = u
+            const {password,monedas,exp,email,validatedEmail,id, ...rest} = u
             return rest
         })
         return usersArr.map(u => UserEntity.fromObject(u))

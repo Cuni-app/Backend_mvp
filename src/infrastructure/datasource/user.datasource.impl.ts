@@ -55,7 +55,7 @@ export class UserDatasourceImpl implements UserDatasource{
             },
         });
         if (!user) throw new CustomError("Usuario no registrado", 404);
-        // if (user.validatedEmail === false) throw new Error('Usuario no validado')
+        //! Quitar despues if (user.validatedEmail === false ) throw new CustomError('Usuario no validado', 400)
 
         const isMatch = bcryptAdapter.compare(loginUserDto.password + '', user.password + "");
         if (!isMatch) throw new CustomError("Contraseña incorrecta", 404);

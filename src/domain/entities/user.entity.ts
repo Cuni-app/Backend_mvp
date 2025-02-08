@@ -12,9 +12,9 @@ export class UserEntity {
         public readonly password?: string,
     ) {}
 
-    get isValidated() {
-        return !!this.validatedEmail;
-    }
+    // get isValidated() {
+    //     return !!this.validatedEmail;
+    // }
 
     public static fromObject(object: { [key: string]: any }) {
         const {
