@@ -50,16 +50,6 @@ export class UserController {
             .catch(error => this.handleError(res, error))
     }
 
-<<<<<<< HEAD
-    // Funciones para visualización de perfil
-
-    public obtenerPerfil = (req: Request, res: Response) => {
-        const { id } = req.params;
-        const idClient = req.body.user.id
-        if (isNaN(+id)) return res.status(401).json("id is not a number");
-        this.userService.visualizarPerfilUsuario(+id,idClient).then((data) => res.json(data))
-        .catch((error) => res.json({ error: error.message }));
-=======
     public validarCodigo = (req: Request, res: Response) => {
         const codigo = req.body.codigo
         try{
@@ -69,7 +59,6 @@ export class UserController {
         } catch (error) {
             this.handleError(res, error)
         }
->>>>>>> clean-arq
     }
 
     public cambiarContrasenia = (req: Request, res: Response) => {

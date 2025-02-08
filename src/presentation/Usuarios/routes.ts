@@ -1,8 +1,5 @@
 import {Router } from 'express';
-import { EmailService } from '../services/email.service';
-import { envs } from '../../config/envs';
 import { UserController } from './controller';
-import { UserDatasourceImpl, UserRepositoryImpl } from '../../infrastructure';
 import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
 
 
@@ -25,13 +22,7 @@ export class UserRoutes {
     router.get('/validarCodigo', userController.validarCodigo)
     router.post('/cambiarPassword', userController.cambiarContrasenia)
 
-
-<<<<<<< HEAD
-    router.get('/obtenerPerfil/:id',[AuthMiddleware.validarToken], userController.obtenerPerfil)
-=======
     // router.get('/obtenerPerfil/:id', userController.obtenerPerfil)
->>>>>>> clean-arq
-
     
     return router;
   }
