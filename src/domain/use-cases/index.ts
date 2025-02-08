@@ -1,0 +1,7 @@
+export * from "./categoria"
+export * from "./follow"
+export * from "./item"
+export * from "./pregunta"
+export * from "./respuesta"
+export * from "./resultado"
+export * from "./user"

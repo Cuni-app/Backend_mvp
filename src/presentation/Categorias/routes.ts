@@ -1,18 +1,22 @@
 import { Router } from 'express';
 import { CategoriaController } from './controller';
-import { CategoryService } from '../repository/category.service';
+import { CategoriaDatasourceImpl, CategoriaRepositoryImpl } from '../../infrastructure';
+import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
 
 export class CategoriaRoutes {
 
   static get routes(): Router {
 
     const router = Router();
-    const categoryService =  new CategoryService()
-    const categoriaController = new CategoriaController(categoryService) 
+    const repository = DIContainerRepository.getCategoriaRepository()
+    const categoriaController = new CategoriaController(repository)
     // Definir las rutas
-    router.get("/getAll", (req, res) => categoriaController.getAllCategorias(req,res))
-    router.post("/create", (req, res) => categoriaController.crearCategoria(req, res) );
-    router.get("/:nombreCategoria", (req,res) => categoriaController.obtenerCategoria(req,res))
+    router.get("/getAll", categoriaController.getAllCategorias)
+    router.post("/create", categoriaController.crearCategoria );
+    router.get("/:nombreCategoria", categoriaController.obtenerCategoriaPorNombre)
+    router.get("/:id", categoriaController.obtenerCategoriaPorId)
+    router.delete("/:id", categoriaController.deleteCategoriaById)
+    router.put("/:id", categoriaController.updateCategoriabyId)
     return router;
   }
 

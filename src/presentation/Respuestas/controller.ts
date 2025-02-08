@@ -1,42 +1,55 @@
 import { Request, Response } from "express";
-import { AnswerService } from "../repository/answer.service";
+import { CreateRespuestaDTO, CustomError, DeleteRespuestaById, GetRespuestasByIdPregunta, RespuestaRepository, UpdateRespuestaByID, UpdateRespuestaDTO } from "../../domain";
+import { CreateRespuesta } from '../../domain/use-cases/respuesta/create-respuesta';
 
 export class RespuestaController {
-    constructor(public readonly answerService: AnswerService) {}
-
+    constructor(private readonly respuestaRepository: RespuestaRepository) {}
+    private handleError = (res: Response, error: unknown) => {
+        if (error instanceof CustomError){
+            res.status(error.statusCode).json({error: error.message})
+            return;
+        }
+        res.status(500).json({error: "Internal server error"})
+    }
     public getRespuestasByIdPregunta = async (req: Request, res: Response) => {
-        const { id } = req.params;
+        const id = +req.params.id;
         if (isNaN(+id)) return res.status(401).json("id is not a number");
-        this.answerService
-            .getRespuestasByIdPregunta(+id)
-            .then((data) => res.json(data))
-            .catch((error) => res.json({ error: error.message }));
+        new GetRespuestasByIdPregunta(this.respuestaRepository)
+            .execute(id)
+            .then(obj => res.status(201).json(obj))
+            .catch(error => this.handleError(res, error))
     };
 
     public crearRespuesta = (req: Request, res: Response) => {
-        const { id_pregunta, contenido, esCorrecto } = req.body;
-        this.answerService
-            .crearRespuesta(id_pregunta, contenido, esCorrecto)
-            .then((data) => res.json(data))
-            .catch((error) => res.json({ error: error.message }));
+        const [error, createRespuestaDto] = CreateRespuestaDTO.create(req.body);
+        if (error) return res.status(400).json(error);
+        new CreateRespuesta(this.respuestaRepository)
+            .execute(createRespuestaDto!)
+            .then(obj => res.status(201).json(obj))
+            .catch(error => this.handleError(res, error))
     };
 
     public actualizarRespuesta = (req: Request, res: Response) => {
         const { id } = req.params;
         if (isNaN(+id)) return res.status(401).json("id is not a number");
-        const { contenido, esCorrecto } = req.body;
-        this.answerService
-            .actualizarRespuesta(+id, contenido, esCorrecto)
-            .then((data) => res.json(data))
-            .catch((error) => res.json({ error: error.message }));
+        const [error, updateRespuestaDto] = UpdateRespuestaDTO.create({
+            ...req.body,
+            id
+        });
+        if (error) return res.status(400).json(error);
+
+        new UpdateRespuestaByID(this.respuestaRepository)
+            .execute(updateRespuestaDto!)
+            .then(obj => res.status(201).json(obj))
+            .catch(error => this.handleError(res, error))
     };
 
     public eliminarRespuesta = (req: Request, res: Response) => {
-        const { id } = req.params;
-        if (isNaN(+id)) return res.status(401).json("id is not a number");
-        this.answerService
-            .eliminarRespuesta(+id)
-            .then((data) => res.json(data))
-            .catch((error) => res.json({ error: error.message }));
+        const id = +req.params.id;
+        if (isNaN(id)) return res.status(401).json("id is not a number");
+        new DeleteRespuestaById(this.respuestaRepository)
+            .execute(id)
+            .then(obj => res.status(201).json(obj))
+            .catch(error => this.handleError(res, error))
     };
 }
