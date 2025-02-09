@@ -73,7 +73,7 @@ export class DIContainerDatasource {
         if(!this.instances.has("RespuestaDatasource")){
             this.instances.set(
                 "RespuestaDatasource",
-                new RespuestaDatasourceImpl(this.getPreguntaDatasource())
+                new RespuestaDatasourceImpl()
             )
         }
         return this.instances.get("RespuestaDatasource")

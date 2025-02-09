@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateRespuestaDTO, CustomError, DeleteRespuestaById, GetRespuestasByIdPregunta, RespuestaRepository, UpdateRespuestaByID, UpdateRespuestaDTO } from "../../domain";
+import { CreateRespuestaDTO, CustomError, DeleteRespuestaById, RespuestaRepository, UpdateRespuestaByID, UpdateRespuestaDTO } from "../../domain";
 import { CreateRespuesta } from '../../domain/use-cases/respuesta/create-respuesta';
 
 export class RespuestaController {
@@ -11,14 +11,7 @@ export class RespuestaController {
         }
         res.status(500).json({error: "Internal server error"})
     }
-    public getRespuestasByIdPregunta = async (req: Request, res: Response) => {
-        const id = +req.params.id;
-        if (isNaN(+id)) return res.status(401).json("id is not a number");
-        new GetRespuestasByIdPregunta(this.respuestaRepository)
-            .execute(id)
-            .then(obj => res.status(201).json(obj))
-            .catch(error => this.handleError(res, error))
-    };
+    
 
     public crearRespuesta = (req: Request, res: Response) => {
         const [error, createRespuestaDto] = CreateRespuestaDTO.create(req.body);

@@ -2,9 +2,7 @@ import { prisma } from "../../data/postgres";
 import { CreateRespuestaDTO, CustomError, PreguntaDatasource, RespuestaDatasource, RespuestaEntity, UpdateRespuestaDTO } from "../../domain";
 
 export class RespuestaDatasourceImpl implements RespuestaDatasource{
-    constructor(
-        private preguntaDatasource: PreguntaDatasource
-    ){}
+    
     async create(createRespuestaDTO: CreateRespuestaDTO): Promise<RespuestaEntity> {
         const respuesta = await prisma.respuesta.create({
             data: {
@@ -40,19 +38,8 @@ export class RespuestaDatasourceImpl implements RespuestaDatasource{
         })
         return RespuestaEntity.fromObject(deleted)
     }
-
-    async getByIdPregunta(idPregunta: number): Promise<RespuestaEntity[]> {
-        await this.preguntaDatasource.getById(idPregunta)
-        const respuestas = await prisma.respuesta.findMany({
-            where: {
-                id_pregunta: idPregunta
-            }
-        })
-
-        return respuestas.map(r => RespuestaEntity.fromObject(r))
-    }
     
-    private async getById(id: number): Promise<RespuestaEntity>{
+    async getById(id: number): Promise<RespuestaEntity>{
         const respuesta = await prisma.respuesta.findUnique({
             where: {
                 id

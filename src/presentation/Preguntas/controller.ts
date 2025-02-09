@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CreatePregunta, CreatePreguntaDTO, CustomError, DeletePreguntaById, GetPreguntaById, PreguntaRepository, UpdatePreguntaById, UpdatePreguntaDTO } from "../../domain";
+import { GetRespuestasByIdPreguna } from "../../domain/use-cases/pregunta/getRespuestas-pregunta";
 
 type preguntaCaracteristicas = {
     enunciado?: string,
@@ -57,4 +58,13 @@ export class PreguntasController {
             .then(obj => res.status(201).json(obj))
             .catch(error => this.handleError(res, error))
     }
+
+    public getRespuestasByIdPregunta = async (req: Request, res: Response) => {
+            const id = +req.params.id;
+            if (isNaN(+id)) return res.status(401).json("id is not a number");
+            new GetRespuestasByIdPreguna(this.preguntaRepository)
+                .execute(id)
+                .then(obj => res.status(201).json(obj))
+                .catch(error => this.handleError(res, error))
+        };
 }

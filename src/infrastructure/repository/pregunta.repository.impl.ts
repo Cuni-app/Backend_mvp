@@ -1,9 +1,12 @@
-import { CreatePreguntaDTO, PreguntaDatasource, PreguntaEntity, PreguntaRepository, UpdatePreguntaDTO } from "../../domain";
+import { CreatePreguntaDTO, PreguntaDatasource, PreguntaEntity, PreguntaRepository, RespuestaEntity, UpdatePreguntaDTO } from "../../domain";
 
 export class PreguntaRepositoryImpl implements PreguntaRepository{
     constructor(
         private readonly dataSource: PreguntaDatasource
     ){}
+    getRespuestasbyIdPregunta(id: number): Promise<{ pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }> {
+        return this.dataSource.getRespuestasbyIdPregunta(id)
+    }
     create(createPreguntaDTO: CreatePreguntaDTO): Promise<PreguntaEntity> {
         return this.dataSource.create(createPreguntaDTO)
     }

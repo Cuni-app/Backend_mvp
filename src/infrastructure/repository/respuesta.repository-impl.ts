@@ -4,6 +4,9 @@ export class RespuestaRepositoryImpl implements RespuestaRepository{
     constructor(
         private readonly dataSource: RespuestaDatasource
     ){}
+    getById(id: number): Promise<RespuestaEntity> {
+        return this.dataSource.getById(id)
+    }
     create(createRespuestaDTO: CreateRespuestaDTO): Promise<RespuestaEntity> {
         return this.dataSource.create(createRespuestaDTO)
     }
@@ -12,8 +15,5 @@ export class RespuestaRepositoryImpl implements RespuestaRepository{
     }
     deleteById(id: number): Promise<RespuestaEntity> {
         return this.dataSource.deleteById(id)
-    }
-    getByIdPregunta(idPregunta: number): Promise<RespuestaEntity[]> {
-        return this.dataSource.getByIdPregunta(idPregunta)
     }
 }

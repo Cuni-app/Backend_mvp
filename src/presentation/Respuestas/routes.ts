@@ -15,7 +15,6 @@ export class RespuestaRoutes {
     const controller = new RespuestaController(repository)
     // Definir las rutas
     // router.use('/api/algo', /*TodoRoutes.routes */ );
-    router.get("/pregunta/:id",  controller.getRespuestasByIdPregunta)
     router.post("/", controller.crearRespuesta)
     router.put("/:id", controller.actualizarRespuesta)
     router.delete("/:id", controller.eliminarRespuesta)
