@@ -21,15 +21,12 @@ export class RespuestaDatasourceImpl implements RespuestaDatasource{
         return RespuestaEntity.fromObject(respuesta)
     }
     async updateById(updateRespuestaDTO: UpdateRespuestaDTO): Promise<RespuestaEntity> {
-        await this.getById(updateRespuestaDTO.id)
+        await this.getById(+updateRespuestaDTO.id)
         const respuesta = await prisma.respuesta.update({
             where: {
                 id: updateRespuestaDTO.id
             },
-            data: {
-                contenido: updateRespuestaDTO.contenido,
-                esCorrecto: updateRespuestaDTO.esCorrecto
-            }
+            data: updateRespuestaDTO
         })
         return RespuestaEntity.fromObject(respuesta)
     }
@@ -48,9 +45,7 @@ export class RespuestaDatasourceImpl implements RespuestaDatasource{
         await this.preguntaDatasource.getById(idPregunta)
         const respuestas = await prisma.respuesta.findMany({
             where: {
-                pregunta: {
-                    id: idPregunta
-                }
+                id_pregunta: idPregunta
             }
         })
 

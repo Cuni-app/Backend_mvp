@@ -21,7 +21,7 @@ export class AppRoutes {
     router.use('/api/resultado', ResultadoRoutes.routes);
     router.use('/api/category', CategoriaRoutes.routes);
     router.use('/api/preguntas', PreguntaRoutes.routes);
-    router.use('/api/respuesta', RespuestaRoutes.routes);
+    router.use('/api/respuestas', RespuestaRoutes.routes);
     router.use('/api/items', ItemRoutes.routes);
     router.use('/api/follow', FollowRoutes.routes);
     

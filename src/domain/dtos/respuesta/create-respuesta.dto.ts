@@ -9,7 +9,7 @@ export class CreateRespuestaDTO {
         [key: string]: any;
     }): [string?, CreateRespuestaDTO?] {
         const {esCorrecto, contenido, id_pregunta } = props;
-        if (!esCorrecto) return ["esCorrecto es requerido", undefined];
+        if (typeof esCorrecto !== "boolean") return ["esCorrecto es requerido", undefined];
         if (!contenido) return ["contenido es requerido", undefined];
         if (!id_pregunta) return ["id_pregunta es requerido", undefined];
 

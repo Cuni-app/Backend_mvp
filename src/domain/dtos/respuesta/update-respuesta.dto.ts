@@ -17,8 +17,8 @@ export class UpdateRespuestaDTO {
         const { id, esCorrecto, contenido, id_pregunta } = props;
 
         if (!id) return ["El id es obligatorio"];
-        if (typeof esCorrecto !== "boolean") return ["EsCorrecto debe ser boolean"]
-        if (typeof contenido !== "string") return ["contenido debe ser string"]
+        if (esCorrecto && typeof esCorrecto !== "boolean") return ["EsCorrecto debe ser boolean"]
+        if (contenido && typeof contenido !== "string") return ["contenido debe ser string"]
         return [
             undefined,
             new UpdateRespuestaDTO(id, esCorrecto, contenido),

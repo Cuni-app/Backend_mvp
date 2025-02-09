@@ -30,8 +30,8 @@ export class RespuestaController {
     };
 
     public actualizarRespuesta = (req: Request, res: Response) => {
-        const { id } = req.params;
-        if (isNaN(+id)) return res.status(401).json("id is not a number");
+        const  id  = +req.params.id;
+        if (isNaN(id)) return res.status(401).json("id is not a number");
         const [error, updateRespuestaDto] = UpdateRespuestaDTO.create({
             ...req.body,
             id

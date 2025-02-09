@@ -29,7 +29,7 @@ export class ResultadosController{
             ...req.body,
             id_usuario: id
         })
-        
+        if (error) return res.status(400).json(error);
         new CreateResultado(this.resultadoRepository)
             .execute(createResultadoDto!)
             .then(obj => res.status(201).json(obj))

@@ -21,6 +21,4 @@ export class RespuestaRoutes {
     router.delete("/:id", controller.eliminarRespuesta)
     return router;
   }
-
-
 }

@@ -13,14 +13,7 @@ export class ResultadoDatasourceImpl implements ResultadoDatasource{
         await this.categoryDatasource.findById(createResultadoDTO.id_categoria)
 
         const resultado = await prisma.resultado.create({
-            data: {
-                calificacion: createResultadoDTO.calificacion,
-                cantidadCorrectas: createResultadoDTO.cantidadCorrectas,
-                cantidadIncorrectas: createResultadoDTO.cantidadIncorrectas,
-                tiempo: createResultadoDTO.tiempo,
-                id_categoria: createResultadoDTO.id_categoria,
-                id_usuario: createResultadoDTO.id_usuario
-            }
+            data: createResultadoDTO
         })
         return ResultadoEntity.fromObject(resultado)
     }
