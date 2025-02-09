@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { PreguntasController } from './controller';
-import { PreguntaDatasourceImpl, PreguntaRepositoryImpl } from '../../infrastructure';
 import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
 
 

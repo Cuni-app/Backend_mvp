@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { CategoriaController } from './controller';
-import { CategoriaDatasourceImpl, CategoriaRepositoryImpl } from '../../infrastructure';
 import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
 
 export class CategoriaRoutes {

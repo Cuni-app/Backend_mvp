@@ -7,9 +7,9 @@ export class FollowEntity{
 
     public static fromObject(object: {[key: string]: any}){
         const {id, idSeguidor, idSeguido} = object
-        if (isNaN(Number(id)) || !id) throw 'Id es requerido'
-        if (isNaN(Number(idSeguido)) || !idSeguido) throw 'IdSeguido es requerido'
-        if (isNaN(Number(idSeguidor)) || !idSeguidor) throw 'IdSeguidor es requerido'
+        if (isNaN(+id) || !id) throw 'Id es requerido'
+        if (isNaN(+idSeguido) || !idSeguido) throw 'IdSeguido es requerido'
+        if (isNaN(+idSeguidor) || !idSeguidor) throw 'IdSeguidor es requerido'
         return new FollowEntity(id, idSeguidor, idSeguido)
     }
 } 

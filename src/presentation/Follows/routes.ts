@@ -1,8 +1,5 @@
 import { Router } from "express"
 import { AuthMiddleware } from "../middleware/auth";
-import { FollowDatasourceImpl, FollowRepositoryImpl, UserDatasourceImpl } from "../../infrastructure";
-import { envs } from "../../config";
-import { EmailService } from '../services/email.service';
 import { FollowController } from "./controller";
 import { DIContainerRepository } from "../../infrastructure/DI/repositoryContainer";
 

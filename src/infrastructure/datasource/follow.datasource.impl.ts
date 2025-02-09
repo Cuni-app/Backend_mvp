@@ -12,19 +12,27 @@ export class FollowDatasourceImpl implements FollowDatasource{
                 id_seguidor: createFollowDTO.idSeguidor
             }
         })
-        return FollowEntity.fromObject(follow)
+        return FollowEntity.fromObject({
+            id: follow.id, 
+            idSeguidor: follow.id_seguidor, 
+            idSeguido: follow.id_seguido
+        })
     }
     async dejarDeSeguir(idSeguido: number, idSeguidor: number): Promise<FollowEntity> {
         const deleted = await prisma.follow.delete({
             where: {
-                id_seguido_id_seguidor: {
-                    id_seguido: idSeguido,
-                    id_seguidor: idSeguidor
+                id_seguidor_id_seguido:{
+                    id_seguidor: idSeguidor,
+                    id_seguido: idSeguido
                 }
             }
         })
 
-        return FollowEntity.fromObject(deleted)
+        return FollowEntity.fromObject({
+            id: deleted.id, 
+            idSeguidor: deleted.id_seguidor, 
+            idSeguido: deleted.id_seguido
+        })
     }
     async getSeguidores(idSeguido: number): Promise<Partial<UserEntity>[]> {
         const seguidores = await prisma.follow.findMany({
@@ -35,11 +43,15 @@ export class FollowDatasourceImpl implements FollowDatasource{
         const users = await Promise.all(
             seguidores.map(f => this.userDatasource.getById(f.id_seguidor))
         )
-        const usersArr = users.map(u => {
-            const {password,monedas,exp,email,validatedEmail,id, ...rest} = u
-            return rest
-        })
-        return usersArr.map(u => UserEntity.fromObject(u))
+        return users
+                .map(u => UserEntity.fromObject(u))
+                .map(x => {
+                    return {
+                        nombre: x.nombre,
+                        nivel: x.nivel,
+                        racha: x.racha
+                    }
+                })
     }
     async getSeguidos(idSeguidor: number): Promise<Partial<UserEntity>[]> {
         const seguidos = await prisma.follow.findMany({
@@ -50,11 +62,15 @@ export class FollowDatasourceImpl implements FollowDatasource{
         const users = await Promise.all(
             seguidos.map(f => this.userDatasource.getById(f.id_seguido))
         )
-        const usersArr = users.map(u => {
-            const {password,monedas,exp,email,validatedEmail,id, ...rest} = u
-            return rest
-        })
-        return usersArr.map(u => UserEntity.fromObject(u))
+        return users
+                .map(u => UserEntity.fromObject(u))
+                .map(x => {
+                    return {
+                        nombre: x.nombre,
+                        nivel: x.nivel,
+                        racha: x.racha
+                    }
+                })
     }
     
 }

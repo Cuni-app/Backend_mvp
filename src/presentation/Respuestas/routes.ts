@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { RespuestaController } from './controller';
-import { PreguntaDatasourceImpl, RespuestaDatasourceImpl, RespuestaRepositoryImpl } from '../../infrastructure';
 import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
 
 

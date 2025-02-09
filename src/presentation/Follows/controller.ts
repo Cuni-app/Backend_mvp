@@ -11,13 +11,14 @@ export class FollowController {
             res.status(error.statusCode).json({error: error.message})
             return;
         }
-        res.status(500).json({error: "Internal server error"})
+        res.status(500).json({error: error})
     }
     
     public seguir = (req: Request, res: Response) => {
-        const idSeguidor = req.body.user;
+        const idSeguidor = req.body.user.id;
         const idSeguido = req.params.id;
-        const [error, createFollowDto] = CreateFollowDTO.create({idSeguidor, idSeguido})
+        const [error, createFollowDto] = CreateFollowDTO.create({idSeguidor: +idSeguidor, idSeguido: +idSeguido})
+        if (error) return res.status(400).json(error);
         new SeguirFollow(this.followRepository)
             .execute(createFollowDto!)
             .then(obj => res.status(201).json(obj))

@@ -1,4 +1,5 @@
 export class UserEntity {
+    
     constructor(
         public readonly id: number,
         public readonly nombre: string,
@@ -11,7 +12,6 @@ export class UserEntity {
         public readonly monedas: number = 0,
         public readonly password?: string,
     ) {}
-
     // get isValidated() {
     //     return !!this.validatedEmail;
     // }
