@@ -23,11 +23,12 @@ export class ItemDatasourceImpl implements ItemDatasource{
         return ItemEntity.fromObject(deleted)
     }
     async getItemsByUser(email: string): Promise<ItemEntity[]> {
+        await this.userDatasource.getByEmail(email)
         const items = await prisma.item.findMany({
             where: {
                 usuarios: {
-                    every: {
-                        email
+                    some:{
+                        email: email
                     }
                 }
             }
