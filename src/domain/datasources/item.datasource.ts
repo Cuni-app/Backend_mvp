@@ -1,6 +1,5 @@
 import { CreateItemDTO } from "../dtos";
 import { ItemEntity } from "../entities";
-import { UserEntity } from "../entities/user.entity";
 
 export abstract class ItemDatasource {
     abstract create(createItemDTO: CreateItemDTO): Promise<ItemEntity>;

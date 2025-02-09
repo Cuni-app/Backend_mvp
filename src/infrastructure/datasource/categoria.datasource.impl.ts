@@ -1,7 +1,10 @@
 import { prisma } from "../../data/postgres";
-import { CategoriaDatasource, CategoriaEntity, CreateCategoriaDTO, CustomError, UpdateCategoriaDTO } from "../../domain";
+import { CategoriaDatasource, CategoriaEntity, CreateCategoriaDTO, CustomError, PreguntaDatasource, PreguntaEntity, RespuestaEntity, UpdateCategoriaDTO } from "../../domain";
 
 export class CategoriaDatasourceImpl implements CategoriaDatasource{
+    constructor(
+        private readonly preguntaDatasource: PreguntaDatasource
+    ){}
     async create(createCategoriaDTO: CreateCategoriaDTO): Promise<CategoriaEntity> {
         const categoria = await prisma.categoria.create({
             data: createCategoriaDTO
@@ -48,6 +51,28 @@ export class CategoriaDatasourceImpl implements CategoriaDatasource{
             }
         })
         return CategoriaEntity.fromObject(deleted)
+    }
+    async getAllPreguntas(id: number): Promise<{ categoria: CategoriaEntity; preguntas: PreguntaEntity[]; }> {
+        const categoria = await this.findById(id)
+        const preguntas = await prisma.pregunta.findMany({
+            where: {
+                id_categoria: id
+            }
+        })
+
+        return {
+            categoria: categoria,
+            preguntas: preguntas
+        }
+    }
+
+    async getSimulacro(id: number): Promise<{ categoria: CategoriaEntity; preguntas: { pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }[]; }> {
+        const {categoria, preguntas} = await this.getAllPreguntas(id)
+        const respuestas = await Promise.all(preguntas.map(p => this.preguntaDatasource.getRespuestasbyIdPregunta(p.id)))
+        return{
+            categoria: categoria,
+            preguntas: respuestas
+        }
     }
     
 }

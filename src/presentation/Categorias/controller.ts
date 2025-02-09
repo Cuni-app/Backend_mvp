@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CategoriaRepository, CreateCategoria, CreateCategoriaDTO, CustomError, DeleteCategoriaById, FindCategoriaById, FindCategoriaByName, GetAllCategoria, UpdateCategoriaById, UpdateCategoriaDTO } from "../../domain";
+import { CategoriaRepository, CreateCategoria, CreateCategoriaDTO, CustomError, DeleteCategoriaById, FindCategoriaById, FindCategoriaByName, GetAllCategoria, GetAllPreguntasPorCategoria, GetSimulacro, UpdateCategoriaById, UpdateCategoriaDTO } from "../../domain";
 
 export class CategoriaController {
     constructor(private readonly categoriaRepository: CategoriaRepository) {}
@@ -57,6 +57,20 @@ export class CategoriaController {
         new UpdateCategoriaById(this.categoriaRepository)
             .execute(updateCategoriaDto!)
             .then(cat => res.json(cat))
+            .catch(error => this.handleError(res, error))
+    }
+    public getPreguntasbyCategoria = (req: Request, res: Response) => {
+        const id = +req.params.id;
+        new GetAllPreguntasPorCategoria(this.categoriaRepository)
+            .execute(id)
+            .then(obj => res.json(obj))
+            .catch(error => this.handleError(res, error))
+    }
+    public getSimulacro = (req: Request, res: Response) => {
+        const id = +req.params.id;
+        new GetSimulacro(this.categoriaRepository)
+            .execute(id)
+            .then(obj => res.json(obj))
             .catch(error => this.handleError(res, error))
     }
 }

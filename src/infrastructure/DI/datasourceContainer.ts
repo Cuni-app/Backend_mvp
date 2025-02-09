@@ -34,7 +34,7 @@ export class DIContainerDatasource {
         if (!this.instances.has("CategoriaDatasource")){
             this.instances.set(
                 "CategoriaDatasource",
-                new CategoriaDatasourceImpl()
+                new CategoriaDatasourceImpl(this.getPreguntaDatasource())
             )
         }
         return this.instances.get("CategoriaDatasource")

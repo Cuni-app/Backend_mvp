@@ -16,6 +16,9 @@ export class CategoriaRoutes {
     router.get("/:id", categoriaController.obtenerCategoriaPorId)
     router.delete("/:id", categoriaController.deleteCategoriaById)
     router.put("/:id", categoriaController.updateCategoriabyId)
+
+    router.get("/getPreguntas/:id", categoriaController.getPreguntasbyCategoria)
+    router.get("/getSimulacro/:id", categoriaController.getSimulacro)
     return router;
   }
 

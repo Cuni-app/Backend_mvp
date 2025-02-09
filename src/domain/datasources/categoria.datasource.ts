@@ -1,5 +1,5 @@
 import { CreateCategoriaDTO, UpdateCategoriaDTO } from "../dtos";
-import { CategoriaEntity } from "../entities";
+import { CategoriaEntity, PreguntaEntity, RespuestaEntity } from "../entities";
 
 export abstract class CategoriaDatasource {
     abstract create(
@@ -13,4 +13,6 @@ export abstract class CategoriaDatasource {
         updateCategoriaDTO: UpdateCategoriaDTO
     ): Promise<CategoriaEntity>;
     abstract deleteById(id: number): Promise<CategoriaEntity>
+    abstract getAllPreguntas(id: number): Promise<{categoria: CategoriaEntity, preguntas: PreguntaEntity[]}>;
+    abstract getSimulacro(id: number): Promise<{categoria: CategoriaEntity, preguntas: {pregunta: PreguntaEntity,respuestas: RespuestaEntity[]}[]}>
 }
