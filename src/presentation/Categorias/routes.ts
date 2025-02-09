@@ -12,7 +12,7 @@ export class CategoriaRoutes {
     // Definir las rutas
     router.get("/getAll", categoriaController.getAllCategorias)
     router.post("/create", categoriaController.crearCategoria );
-    router.get("/:nombreCategoria", categoriaController.obtenerCategoriaPorNombre)
+    router.get("/nombre/:nombreCategoria", categoriaController.obtenerCategoriaPorNombre)
     router.get("/:id", categoriaController.obtenerCategoriaPorId)
     router.delete("/:id", categoriaController.deleteCategoriaById)
     router.put("/:id", categoriaController.updateCategoriabyId)

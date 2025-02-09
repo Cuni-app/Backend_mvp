@@ -17,8 +17,8 @@ export class UpdateCategoriaDTO {
         const { id, nombre, duracion } = props;
 
         if (!id) return ["El id es obligatorio"];
-        if (typeof nombre !== "string") return ["nombre debe ser string"]
-        if (typeof duracion !== "number") return ["duracion debe ser number"]
+        if (nombre && typeof nombre !== "string") return ["nombre debe ser string"]
+        if (duracion && typeof duracion !== "number") return ["duracion debe ser number"]
         return [
             undefined,
             new UpdateCategoriaDTO(id, nombre, duracion),
