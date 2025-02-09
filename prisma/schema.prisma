@@ -69,8 +69,8 @@ model resultado {
   id_usuario          Int
   categoria           categoria @relation("CategoriaResultados", fields: [id_categoria], references: [id])
   id_categoria        Int
-
-  @@unique([id_usuario, id_categoria]) //? Asegura que no haya duplicados en la relación, 
+  fechaCreacion       DateTime  @default(now())
+  // @@unique([id_usuario, id_categoria]) //? Asegura que no haya duplicados en la relación, 
 }
 
 model categoria {

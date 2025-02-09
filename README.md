@@ -8,7 +8,7 @@ Copiar el contenido de env.template en un nuevo archivo .env
 
 
 Para construir la base de datos usando prisma
-`npx prisma migrate dev``
+`npx prisma migrate dev`
 
 
 --NO USAR--

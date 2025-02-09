@@ -13,18 +13,18 @@ export class CreateResultadoDTO {
     }): [string?, CreateResultadoDTO?] {
         const {
             tiempo,
-            calificacion,
             cantidadCorrectas,
             cantidadIncorrectas,
             id_usuario,
             id_categoria,
         } = props;
         if (!tiempo) return ["tiempo es requerido", undefined];
-        if (!calificacion) return ["calificacion es requerido", undefined];
-        if (!cantidadCorrectas)
+    
+        if (isNaN(cantidadCorrectas) || cantidadCorrectas < 0)
             return ["cantidadCorrectas es requerido", undefined];
-        if (!cantidadIncorrectas)
+        if (isNaN(cantidadIncorrectas) || cantidadCorrectas < 0)
             return ["cantidadIncorrectas es requerido", undefined];
+        const calificacion = Math.round(cantidadCorrectas * 200.0 / (cantidadCorrectas + cantidadIncorrectas)) / 10.0
         if (!id_categoria) return ["id_categoria es requerido", undefined];
         if (!id_usuario) return ["id_usuario es requerido", undefined];
 

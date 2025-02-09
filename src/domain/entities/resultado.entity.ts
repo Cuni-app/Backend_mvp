@@ -19,17 +19,17 @@ export class ResultadoEntity {
             id_usuario,
             id_categoria,
         } = object;
-        if (isNaN(Number(id)) || !id) throw "id es requerido";
-        if (isNaN(Number(tiempo)) || !tiempo) throw "tiempos es requerido";
-        if (isNaN(Number(calificacion)) || !calificacion)
+        if (isNaN(+id) || !id) throw "id es requerido";
+        if (isNaN(+tiempo) || !tiempo) throw "tiempos es requerido";
+        if (isNaN(+calificacion) || !calificacion)
             throw "calificacion es requerido";
-        if (isNaN(Number(cantidadCorrectas)) || !cantidadCorrectas)
+        if ((typeof cantidadCorrectas !== "number" && cantidadCorrectas === 0))
             throw "cantidadCorrectas es requerido";
-        if (isNaN(Number(cantidadIncorrectas)) || !cantidadIncorrectas)
+        if ((typeof cantidadIncorrectas !== "number" && cantidadIncorrectas === 0))
             throw "cantidadIncorrectas es requerido";
-        if (isNaN(Number(id_usuario)) || !id_usuario)
+        if (isNaN(+id_usuario) || !id_usuario)
             throw "id_usuario es requerido";
-        if (isNaN(Number(id_categoria)) || !id_categoria)
+        if (isNaN(+id_categoria) || !id_categoria)
             throw "id_categoria es requerido";
 
         return new ResultadoEntity(
