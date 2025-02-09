@@ -21,14 +21,14 @@ export class UpdatePreguntaDTO {
         const { id, enunciado, imagen_url, solucion_url,id_categoria } = props;
 
         if (!id) return ["El id es obligatorio"];
-        if (typeof id_categoria !== "number")
+        if (isNaN(+id))
             return ["id_categoria debe ser numero"];
         if (typeof enunciado !== "string") return ["enunciado debe ser string"];
-        if (imagen_url !== null && typeof imagen_url !== "string")
+        if (imagen_url  && typeof imagen_url !== "string")
             return ["imagen_url debe ser una cadena de texto o null"];
         if (imagen_url && !/^https?:\/\/\S+$/.test(imagen_url))
             return ["imagen_url debe ser una URL válida"];
-        if (solucion_url !== null && typeof solucion_url !== "string")
+        if (solucion_url && typeof solucion_url !== "string")
             return ["solucion_url debe ser una cadena de texto o null"];
         if (solucion_url && !/^https?:\/\/\S+$/.test(solucion_url))
             return ["solucion_url debe ser una URL válida"];

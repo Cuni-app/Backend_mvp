@@ -25,16 +25,7 @@ export class PreguntaDatasourceImpl implements PreguntaDatasource{
             where: {
                 id: updatePreguntaDTO.id
             },
-            data: {
-                enunciado: updatePreguntaDTO.enunciado,
-                imagen_url: updatePreguntaDTO.imagen_url,
-                solucion_url: updatePreguntaDTO.solucion_url,
-                categoria: {
-                    connect: {
-                        id: updatePreguntaDTO.id_categoria
-                    }
-                }
-            }
+            data: updatePreguntaDTO
         })
         return PreguntaEntity.fromObject(pregunta)
     }
