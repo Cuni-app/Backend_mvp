@@ -7,7 +7,7 @@ export class ResultadoDatasourceImpl implements ResultadoDatasource{
         private userDatasource: UserDatasource,
         private categoryDatasource: CategoriaDatasource
     ){}
-    async create(createResultadoDTO: CreateResultadoDTO): Promise<ResultadoEntity> {
+    async create(createResultadoDTO: CreateResultadoDTO, monedas: number, experiencia: number): Promise<ResultadoEntity> {
         
         await this.userDatasource.getById(createResultadoDTO.id_usuario)
         await this.categoryDatasource.findById(createResultadoDTO.id_categoria)
@@ -15,6 +15,17 @@ export class ResultadoDatasourceImpl implements ResultadoDatasource{
         const resultado = await prisma.resultado.create({
             data: createResultadoDTO
         })
+
+        const recompensa = await prisma.user.update({
+            where:{
+                id:createResultadoDTO.id_usuario
+            },
+            data:{
+                monedas,
+                exp:experiencia
+            }
+        })
+
         return ResultadoEntity.fromObject(resultado)
     }
     async getByUserId(UserId: number): Promise<ResultadoEntity[]> {

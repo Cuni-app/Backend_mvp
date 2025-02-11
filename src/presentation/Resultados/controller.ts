@@ -26,12 +26,17 @@ export class ResultadosController{
     public postResultado  = (req: Request, res: Response) => {
         const {id} = req.body.user
         const [error, createResultadoDto] = CreateResultadoDTO.create({
-            ...req.body,
+            tiempo: req.body.tiempo,
+            cantidadCorrectas: req.body.cantidadCorrectas,
+            cantidadIncorrectas: req.body.cantidadIncorrectas,
+            id_categoria: req.body.id_categoria,
             id_usuario: id
         })
-        if (error) return res.status(400).json(error);
+        const monedas = req.body.monedas
+        const experiencia = req.body.experiencia
+        if (error || !monedas || !experiencia) return res.status(400).json(error);
         new CreateResultado(this.resultadoRepository)
-            .execute(createResultadoDto!)
+            .execute(createResultadoDto!,monedas,experiencia)
             .then(obj => res.status(201).json(obj))
             .catch(error => this.handleError(res, error))
     }
