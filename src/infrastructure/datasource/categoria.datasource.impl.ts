@@ -24,14 +24,22 @@ export class CategoriaDatasourceImpl implements CategoriaDatasource{
         if (!categoria) throw new CustomError(`No se encontro categoria con ID: ${id}`, 404);
         return CategoriaEntity.fromObject(categoria)
     }
-    async findByName(name: string): Promise<CategoriaEntity> {
+    async findByName(name: string): Promise<{categoria: CategoriaEntity, preguntas: number[]}> {
         const categoria = await prisma.categoria.findUnique({
             where: {
                 nombre: name
+            },
+            include: {
+                pregunta: true
             }
         })
         if (!categoria) throw new CustomError(`No se encontro categoria con Nombre: ${name}`, 404);
-        return CategoriaEntity.fromObject(categoria)
+        const objCategoria = {
+            id: categoria.id,
+            nombre: categoria.nombre,
+            duracion: categoria.duracion
+        }
+        return {categoria: CategoriaEntity.fromObject(categoria), preguntas: categoria.pregunta.map(p => p.id)}
     }
     async updateById(updateCategoriaDTO: UpdateCategoriaDTO): Promise<CategoriaEntity> {
         await this.findById(updateCategoriaDTO.id)

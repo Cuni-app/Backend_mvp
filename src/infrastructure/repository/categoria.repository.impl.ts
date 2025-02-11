@@ -21,7 +21,7 @@ export class CategoriaRepositoryImpl implements CategoriaRepository{
     findById(id: number): Promise<CategoriaEntity> {
         return this.dataSource.findById(id)
     }
-    findByName(name: string): Promise<CategoriaEntity> {
+    findByName(name: string): Promise<{categoria: CategoriaEntity, preguntas: number[]}> {
         return this.dataSource.findByName(name)
     }
     updateById(updateCategoriaDTO: UpdateCategoriaDTO): Promise<CategoriaEntity> {

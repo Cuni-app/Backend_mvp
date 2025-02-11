@@ -8,7 +8,7 @@ export abstract class CategoriaRepository {
     abstract getAll(): Promise<CategoriaEntity[]>;
 
     abstract findById(id: number): Promise<CategoriaEntity>;
-    abstract findByName(name: string): Promise<CategoriaEntity>;
+    abstract findByName(name: string): Promise<{categoria: CategoriaEntity, preguntas: number[]}>;
     abstract updateById(
         updateCategoriaDTO: UpdateCategoriaDTO
     ): Promise<CategoriaEntity>;
