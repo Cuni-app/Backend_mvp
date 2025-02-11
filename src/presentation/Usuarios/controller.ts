@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CambiarContrasenia, CreateUserDTO, CustomError, EnviarCodigo, LoginUser, LoginUserDto, RegistroUsuario, UpdateUserDTO, UserRepository, ValidarCodigo } from "../../domain";
+import { CambiarContrasenia, CreateUserDTO, CustomError, EnviarCodigo, LoginUser, LoginUserDto, RegistroUsuario, UpdateUserDTO, UserRepository } from "../../domain";
 import { ValidateEmail } from '../../domain/use-cases/user/validateEmail-user';
 
 export class UserController {
@@ -48,17 +48,6 @@ export class UserController {
             .execute(email)
             .then(obj => res.status(201).json(obj))
             .catch(error => this.handleError(res, error))
-    }
-
-    public validarCodigo = (req: Request, res: Response) => {
-        const codigo = req.body.codigo
-        try{
-            const valor =  new ValidarCodigo(this.userRepository)
-                .execute(codigo)
-            res.status(201).json(valor)
-        } catch (error) {
-            this.handleError(res, error)
-        }
     }
 
     public cambiarContrasenia = (req: Request, res: Response) => {

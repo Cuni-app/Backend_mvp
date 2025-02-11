@@ -2,19 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { JwtAdapter } from "../../config/jwt.adapter";
 import { prisma } from '../../data/postgres';
 
-interface JwtPayload {
-    user: {
-        id: string;
-        [key: string]: any;
-    };
-}
-
-// export interface MyRequest extends Request {
-//     user?: {
-//         id:string;
-//         [key: string]: any;
-//     }
-// }
 
 export class AuthMiddleware {
     static async validarToken(req: Request, res: Response, next: NextFunction) {

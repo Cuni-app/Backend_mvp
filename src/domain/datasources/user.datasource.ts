@@ -8,7 +8,6 @@ export abstract class UserDatasource{
     abstract login(loginUserDto: LoginUserDto): Promise<{user: Partial<UserEntity>, token: string}>
     abstract validateEmail(token:string): Promise<boolean>;
     abstract enviarCodigo(email: string): Promise<boolean>;
-    abstract validarCodigo(codigo: number): boolean;
     abstract cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>>
 
 }

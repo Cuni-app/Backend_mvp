@@ -22,9 +22,6 @@ export class UserRepositoryImpl implements UserRepository{
     enviarCodigo(email: string): Promise<boolean> {
         return this.dataSource.enviarCodigo(email)
     }
-    validarCodigo(codigo: number): boolean {
-        return this.dataSource.validarCodigo(codigo)
-    }
     cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>> {
         return this.dataSource.cambiarContrasenia(updateUserDto)
     }

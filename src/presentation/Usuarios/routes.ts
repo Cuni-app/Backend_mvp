@@ -1,6 +1,7 @@
 import {Router } from 'express';
 import { UserController } from './controller';
 import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
+import { ChangePasswordMiddleware } from '../middleware/changePassword';
 
 
 export class UserRoutes {
@@ -19,8 +20,7 @@ export class UserRoutes {
     router.get('/validate-email/:token', userController.validateEmail)
 
     router.get('/codigo', userController.enviarCodigo)
-    router.get('/validarCodigo', userController.validarCodigo)
-    router.post('/cambiarPassword', userController.cambiarContrasenia)
+    router.post('/cambiarPassword', [ChangePasswordMiddleware.validarCodigo],userController.cambiarContrasenia)
 
     // router.get('/obtenerPerfil/:id', userController.obtenerPerfil)
     

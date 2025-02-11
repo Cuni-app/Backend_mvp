@@ -101,14 +101,6 @@ export class UserDatasourceImpl implements UserDatasource{
         return true
     }
 
-    validarCodigo(codigo: number): boolean {
-        const valor  = myCache.take(codigo)
-        if (valor == undefined){
-            throw new CustomError('no hay codigo', 404);
-        }
-        return true
-    }
-
     async cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>> {
         
         const hashedPassword = bcryptAdapter.hash(updateUserDto.password!);
