@@ -34,11 +34,6 @@ export class CategoriaDatasourceImpl implements CategoriaDatasource{
             }
         })
         if (!categoria) throw new CustomError(`No se encontro categoria con Nombre: ${name}`, 404);
-        const objCategoria = {
-            id: categoria.id,
-            nombre: categoria.nombre,
-            duracion: categoria.duracion
-        }
         return {categoria: CategoriaEntity.fromObject(categoria), preguntas: categoria.pregunta.map(p => p.id)}
     }
     async updateById(updateCategoriaDTO: UpdateCategoriaDTO): Promise<CategoriaEntity> {
@@ -67,10 +62,10 @@ export class CategoriaDatasourceImpl implements CategoriaDatasource{
                 id_categoria: id
             }
         })
-
+        const shuffledPreguntas = preguntas.sort(() => Math.random() - 0.5);
         return {
             categoria: categoria,
-            preguntas: preguntas
+            preguntas: shuffledPreguntas
         }
     }
 

@@ -49,10 +49,10 @@ export class PreguntaDatasourceImpl implements PreguntaDatasource{
                 id_pregunta: pregunta.id
             }
         })
-
+        const shuffledRespuestas = respuestas.sort(() => Math.random() - 0.5);
         return {
             pregunta: PreguntaEntity.fromObject(pregunta),
-            respuestas: respuestas.map(x => RespuestaEntity.fromObject(x))
+            respuestas: shuffledRespuestas.map(x => RespuestaEntity.fromObject(x))
         }
     }
 }
