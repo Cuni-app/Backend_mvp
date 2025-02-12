@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateResultado, CustomError, GetResultadosByUser, ResultadoRepository } from "../../domain";
+import { CreateResultado, CustomError, GetResultadosByUser, ResultadoRepository, UpdateUserDTO } from "../../domain";
 import { CreateResultadoDTO } from '../../domain/dtos/resultado/create-resultado.dto';
 
 
@@ -25,18 +25,20 @@ export class ResultadosController{
 
     public postResultado  = (req: Request, res: Response) => {
         const {id} = req.body.user
+        const {user, experiencia=0, monedas=0,...dto} = req.body
         const [error, createResultadoDto] = CreateResultadoDTO.create({
-            tiempo: req.body.tiempo,
-            cantidadCorrectas: req.body.cantidadCorrectas,
-            cantidadIncorrectas: req.body.cantidadIncorrectas,
-            id_categoria: req.body.id_categoria,
+            ...dto,
             id_usuario: id
         })
-        const monedas = req.body.monedas
-        const experiencia = req.body.experiencia
-        if (error || !monedas || !experiencia) return res.status(400).json(error);
+        const [errorUpdate, updateUserDTO] = UpdateUserDTO.create({
+            email: user.email,
+            monedas: monedas,
+            exp: experiencia
+        })
+        if (error) return res.status(400).json(error);
+        if (errorUpdate) return res.status(400).json(errorUpdate);
         new CreateResultado(this.resultadoRepository)
-            .execute(createResultadoDto!,monedas,experiencia)
+            .execute(createResultadoDto!,updateUserDTO!)
             .then(obj => res.status(201).json(obj))
             .catch(error => this.handleError(res, error))
     }

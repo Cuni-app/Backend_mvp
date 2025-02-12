@@ -1,5 +1,5 @@
 import { prisma } from "../../data/postgres";
-import { CategoriaDatasource, CreateResultadoDTO, PreguntaDatasource, ResultadoDatasource, ResultadoEntity, UserDatasource } from "../../domain";
+import { CategoriaDatasource, CreateResultadoDTO, PreguntaDatasource, ResultadoDatasource, ResultadoEntity, UpdateUserDTO, UserDatasource } from "../../domain";
 
 export class ResultadoDatasourceImpl implements ResultadoDatasource{
     
@@ -7,8 +7,7 @@ export class ResultadoDatasourceImpl implements ResultadoDatasource{
         private userDatasource: UserDatasource,
         private categoryDatasource: CategoriaDatasource
     ){}
-    async create(createResultadoDTO: CreateResultadoDTO, monedas: number, experiencia: number): Promise<ResultadoEntity> {
-        
+    async create(createResultadoDTO: CreateResultadoDTO, updateUserDTO: UpdateUserDTO): Promise<ResultadoEntity> {
         const datosUsuario = await this.userDatasource.getById(createResultadoDTO.id_usuario)
         await this.categoryDatasource.findById(createResultadoDTO.id_categoria)
 
@@ -22,8 +21,8 @@ export class ResultadoDatasourceImpl implements ResultadoDatasource{
                 id:createResultadoDTO.id_usuario
             },
             data:{
-                monedas: datosUsuario.monedas+monedas,
-                exp:datosUsuario.exp+experiencia
+                monedas: datosUsuario.monedas+updateUserDTO.monedas!,
+                exp:datosUsuario.exp+updateUserDTO.exp!
             }
         })
         if (!recompensa) throw new Error("Error al añadir recompensa")
