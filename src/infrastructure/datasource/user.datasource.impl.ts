@@ -150,7 +150,7 @@ export class UserDatasourceImpl implements UserDatasource{
         return isSent;
     };
 
-    async obtenerPerfil(userID:number): Promise<any>{
+    async obtenerPerfil(userID:number): Promise<Partial<UserEntity> & { seguidores: number; seguidos: number }>{
         const myUser: UserEntity = await this.getById(userID)
         const {id,password,validatedEmail, ...resultUserData} = myUser
         const seguidores = await prisma.follow.count({

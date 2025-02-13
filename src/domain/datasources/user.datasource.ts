@@ -10,6 +10,6 @@ export abstract class UserDatasource{
     abstract enviarCodigo(email: string): Promise<boolean>;
     abstract cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>>
     // Crear DTO para usuario perfil
-    abstract obtenerPerfil(userID:number): Promise<any>
+    abstract obtenerPerfil(userID:number): Promise<Partial<UserEntity> & { seguidores: number; seguidos: number }>
 
 }
