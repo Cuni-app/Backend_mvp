@@ -68,8 +68,9 @@ export class CategoriaController {
     }
     public getSimulacro = (req: Request, res: Response) => {
         const id = +req.params.id;
+        const cantidad = !!req.query.cantidad ? +req.query.cantidad : undefined;
         new GetSimulacro(this.categoriaRepository)
-            .execute(id)
+            .execute(id, cantidad)
             .then(obj => res.json(obj))
             .catch(error => this.handleError(res, error))
     }
