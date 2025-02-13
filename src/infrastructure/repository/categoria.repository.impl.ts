@@ -5,10 +5,10 @@ export class CategoriaRepositoryImpl implements CategoriaRepository{
     constructor(
         private readonly dataSource: CategoriaDatasource
     ){}
-    getSimulacro(id: number): Promise<{ categoria: CategoriaEntity; preguntas: { pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }[]; }> {
-        return this.dataSource.getSimulacro(id)
+    getSimulacro(id: number, cantidad?:number): Promise<{ categoria: CategoriaEntity; preguntas: { pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }[]; }> {
+        return this.dataSource.getSimulacro(id, cantidad)
     }
-    getAllPreguntas(id: number): Promise<{ categoria: CategoriaEntity; preguntas: PreguntaEntity[]; }> {
+    getAllPreguntas(id: number, cantidad?: number): Promise<{ categoria: CategoriaEntity; preguntas: PreguntaEntity[]; }> {
         return this.dataSource.getAllPreguntas(id)
     }
 

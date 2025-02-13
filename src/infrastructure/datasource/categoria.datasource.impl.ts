@@ -55,7 +55,7 @@ export class CategoriaDatasourceImpl implements CategoriaDatasource{
         })
         return CategoriaEntity.fromObject(deleted)
     }
-    async getAllPreguntas(id: number): Promise<{ categoria: CategoriaEntity; preguntas: PreguntaEntity[]; }> {
+    async getAllPreguntas(id: number, cantidad?: number): Promise<{ categoria: CategoriaEntity; preguntas: PreguntaEntity[]; }> {
         const categoria = await this.findById(id)
         const preguntas = await prisma.pregunta.findMany({
             where: {
@@ -63,19 +63,20 @@ export class CategoriaDatasourceImpl implements CategoriaDatasource{
             }
         })
         const shuffledPreguntas = preguntas.sort(() => Math.random() - 0.5);
+
         return {
             categoria: categoria,
-            preguntas: shuffledPreguntas
+            preguntas: !!cantidad ? shuffledPreguntas.slice(0, cantidad) : shuffledPreguntas
         }
     }
 
-    async getSimulacro(id: number): Promise<{ categoria: CategoriaEntity; preguntas: { pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }[]; }> {
-        const {categoria, preguntas} = await this.getAllPreguntas(id)
+    async getSimulacro(id: number, cantidad?: number): Promise<{ categoria: CategoriaEntity; preguntas: { pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }[]; }> {
+        const {categoria, preguntas} = await this.getAllPreguntas(id, cantidad)
         const respuestas = await Promise.all(preguntas.map(p => this.preguntaDatasource.getRespuestasbyIdPregunta(p.id)))
-        return{
+        return {
             categoria: categoria,
             preguntas: respuestas
-        }
+        }; 
     }
     
 }

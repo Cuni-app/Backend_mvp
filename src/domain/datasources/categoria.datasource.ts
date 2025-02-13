@@ -13,6 +13,6 @@ export abstract class CategoriaDatasource {
         updateCategoriaDTO: UpdateCategoriaDTO
     ): Promise<CategoriaEntity>;
     abstract deleteById(id: number): Promise<CategoriaEntity>
-    abstract getAllPreguntas(id: number): Promise<{categoria: CategoriaEntity, preguntas: PreguntaEntity[]}>;
-    abstract getSimulacro(id: number): Promise<{categoria: CategoriaEntity, preguntas: {pregunta: PreguntaEntity,respuestas: RespuestaEntity[]}[]}>
+    abstract getAllPreguntas(id: number, cantidad?: number): Promise<{categoria: CategoriaEntity, preguntas: PreguntaEntity[]}>;
+    abstract getSimulacro(id: number, cantidad?: number): Promise<{categoria: CategoriaEntity, preguntas: {pregunta: PreguntaEntity,respuestas: RespuestaEntity[]}[]}>
 }
