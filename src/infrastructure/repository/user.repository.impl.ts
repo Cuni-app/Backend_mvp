@@ -25,4 +25,7 @@ export class UserRepositoryImpl implements UserRepository{
     cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>> {
         return this.dataSource.cambiarContrasenia(updateUserDto)
     }
+    obtenerPerfil(userID:number): Promise<any>{
+        return this.dataSource.obtenerPerfil(userID)
+    }
 }

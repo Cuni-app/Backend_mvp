@@ -22,7 +22,7 @@ export class UserRoutes {
     router.get('/codigo', userController.enviarCodigo)
     router.post('/cambiarPassword', [ChangePasswordMiddleware.validarCodigo],userController.cambiarContrasenia)
 
-    // router.get('/obtenerPerfil/:id', userController.obtenerPerfil)
+    router.get('/obtenerPerfil/:id', userController.obtenerPerfil)
     
     return router;
   }

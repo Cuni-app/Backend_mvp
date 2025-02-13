@@ -9,5 +9,7 @@ export abstract class UserDatasource{
     abstract validateEmail(token:string): Promise<boolean>;
     abstract enviarCodigo(email: string): Promise<boolean>;
     abstract cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>>
+    // Crear DTO para usuario perfil
+    abstract obtenerPerfil(userID:number): Promise<any>
 
 }
