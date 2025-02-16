@@ -169,4 +169,30 @@ export class UserDatasourceImpl implements UserDatasource{
             seguidos
         }
     }
+
+    async obtenerRanking(userID:number, page: number): Promise<Partial<UserEntity>[]> {
+        const myUser: UserEntity = await this.getById(userID)
+        const higherScores: Partial<UserEntity>[] = await prisma.user.findMany({
+            where:{exp:{gt:myUser.exp}},
+            orderBy:{exp:'asc'},
+            take: 5,
+            select:{
+                id:true,
+                nombre:true,
+                exp:true
+            }
+        })
+        const lowerScores: Partial<UserEntity>[] = await prisma.user.findMany({
+            where:{exp:{lt:myUser.exp}},
+            orderBy:{exp:'asc'},
+            take: 5,
+            select:{
+                id:true,
+                nombre:true,
+                exp:true
+            }
+        })
+        const returnList = higherScores.concat([{id:myUser.id,nombre:myUser.nombre,exp:myUser.exp}],lowerScores)
+        return returnList
+    }
 }
