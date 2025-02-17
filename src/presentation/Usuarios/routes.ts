@@ -2,6 +2,7 @@ import {Router } from 'express';
 import { UserController } from './controller';
 import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
 import { ChangePasswordMiddleware } from '../middleware/changePassword';
+import { AuthMiddleware } from '../middleware/auth';
 
 
 export class UserRoutes {
@@ -23,6 +24,7 @@ export class UserRoutes {
     router.post('/cambiarPassword', [ChangePasswordMiddleware.validarCodigo],userController.cambiarContrasenia)
 
     router.get('/obtenerPerfil/:id', userController.obtenerPerfil)
+    router.get('/obtenerRanking/:page',[AuthMiddleware.validarToken],userController.obtenerRanking)
     
     return router;
   }

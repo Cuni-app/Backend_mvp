@@ -28,4 +28,7 @@ export class UserRepositoryImpl implements UserRepository{
     obtenerPerfil(userID:number): Promise<Partial<UserEntity> & { seguidores: number; seguidos: number }>{
         return this.dataSource.obtenerPerfil(userID)
     }
+    obtenerRanking(userID: number, page: number): Promise<Partial<UserEntity>[]> {
+        return this.dataSource.obtenerRanking(userID,page)
+    }
 }

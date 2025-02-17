@@ -9,7 +9,6 @@ export abstract class UserRepository{
     abstract validateEmail(token:string): Promise<boolean>;
     abstract enviarCodigo(email: string): Promise<boolean>;
     abstract cambiarContrasenia(updateUserDto: UpdateUserDTO): Promise<Partial<UserEntity>>
-    // Crear DTO para usuario perfil
     abstract obtenerPerfil(userID:number): Promise<Partial<UserEntity> & { seguidores: number; seguidos: number }>
     abstract obtenerRanking(userID:number, page: number): Promise<Partial<UserEntity>[]>
 

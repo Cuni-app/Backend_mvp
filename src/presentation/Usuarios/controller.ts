@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CambiarContrasenia, CreateUserDTO, CustomError, EnviarCodigo, LoginUser, LoginUserDto, ObtenerPerfil, RegistroUsuario, UpdateUserDTO, UserRepository } from "../../domain";
 import { ValidateEmail } from '../../domain/use-cases/user/validateEmail-user';
+import { ObtenerRanking } from "../../domain/use-cases/user/obtenerRanking-user";
 
 export class UserController {
     constructor(
@@ -68,6 +69,14 @@ export class UserController {
         const { id } = req.params;
         if (isNaN(+id)) return res.status(401).json("id is not a number");
         new ObtenerPerfil(this.userRepository).execute(+id).then((data) => res.json(data))
+        .catch((error) => res.json({ error: error.message }));
+    }
+
+    public obtenerRanking = (req: Request, res: Response) => {
+        const { id } = req.body.user;
+        const { page } = req.params
+        if (isNaN(+page)) return res.status(401).json("Page is not a number");
+        new ObtenerRanking(this.userRepository).execute(id,+page).then((data) => res.json(data))
         .catch((error) => res.json({ error: error.message }));
     }
 }
