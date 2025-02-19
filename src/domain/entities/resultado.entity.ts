@@ -1,3 +1,5 @@
+import { CustomError } from "../errors";
+
 export class ResultadoEntity {
     constructor(
         public readonly id: number,
@@ -19,18 +21,18 @@ export class ResultadoEntity {
             id_usuario,
             id_categoria,
         } = object;
-        if (isNaN(+id) || !id) throw "id es requerido";
-        if (isNaN(+tiempo) || !tiempo) throw "tiempos es requerido";
+        if (isNaN(+id) || !id) throw new CustomError("id es requerido");
+        if (isNaN(+tiempo) || !tiempo) throw new CustomError("tiempos es requerido");
         if (isNaN(+calificacion) || !calificacion)
-            throw "calificacion es requerido";
+            throw new CustomError("calificacion es requerido");
         if ((typeof cantidadCorrectas !== "number" && cantidadCorrectas === 0))
-            throw "cantidadCorrectas es requerido";
+            throw new CustomError("cantidadCorrectas es requerido");
         if ((typeof cantidadIncorrectas !== "number" && cantidadIncorrectas === 0))
-            throw "cantidadIncorrectas es requerido";
+            throw new CustomError("cantidadIncorrectas es requerido");
         if (isNaN(+id_usuario) || !id_usuario)
-            throw "id_usuario es requerido";
+            throw new CustomError("id_usuario es requerido");
         if (isNaN(+id_categoria) || !id_categoria)
-            throw "id_categoria es requerido";
+            throw new CustomError("id_categoria es requerido");
 
         return new ResultadoEntity(
             id,

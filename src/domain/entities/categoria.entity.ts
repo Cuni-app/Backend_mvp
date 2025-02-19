@@ -1,3 +1,4 @@
+import { CustomError } from "../errors"
 import { PreguntaEntity } from "./pregunta.entity"
 
 export class CategoriaEntity{
@@ -10,9 +11,9 @@ export class CategoriaEntity{
     
     public static fromObject(object: {[key: string]: any}){
         const {id, nombre, duracion, preguntas = undefined} = object
-        if (isNaN(Number(id)) || !id) throw 'id es requerido'
-        if (!nombre) throw 'Nombre es requerdido'
-        if (!duracion) throw 'Nombre es requerdido'
+        if (isNaN(Number(id)) || !id) throw new CustomError('id es requerido')
+        if (!nombre) throw new CustomError('Nombre es requerdido')
+        if (!duracion) throw new CustomError('Nombre es requerdido')
 
         return new CategoriaEntity(id, nombre, duracion, preguntas)
     }

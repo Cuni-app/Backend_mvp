@@ -1,3 +1,5 @@
+import { CustomError } from "../errors";
+
 export class UserEntity {
     
     constructor(
@@ -30,25 +32,25 @@ export class UserEntity {
             monedas,
         } = object;
         // Todo realizar validaciones de datos
-        if (isNaN(Number(id)) || !id) throw "Es requerido el id";
-        if (!nombre) throw "Es requerido el nombre";
-        if (!email) throw "Es requerido el email";
+        if (isNaN(Number(id)) || !id) throw new CustomError("Es requerido el id");
+        if (!nombre) throw new CustomError("Es requerido el nombre");
+        if (!email) throw new CustomError("Es requerido el email");
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-            throw "El email es requerido y debe tener un formato válido.";
+            throw new CustomError("El email es requerido y debe tener un formato válido.");
         if (password && (typeof password !== "string" || password.length < 6)) 
-            throw "El password debe ser una cadena de texto de al menos 6 caracteres.";
+            throw new CustomError("El password debe ser una cadena de texto de al menos 6 caracteres.");
         if (!validatedEmail && typeof validatedEmail !== "boolean")
-            throw "El campo validatedEmail debe ser un booleano.";
+            throw new CustomError("El campo validatedEmail debe ser un booleano.");
         if (!premium && typeof premium !== "boolean")
-            throw "El campo premium debe ser un booleano.";
+            throw new CustomError("El campo premium debe ser un booleano.");
         if (!nivel && (isNaN(Number(nivel)) || nivel < 0))
-            throw "El nivel debe ser un número válido y no negativo.";
+            throw new CustomError("El nivel debe ser un número válido y no negativo.");
         if (!exp && (isNaN(Number(exp)) || exp < 0))
-            throw "El campo exp debe ser un número válido y no negativo.";
+            throw new CustomError("El campo exp debe ser un número válido y no negativo.");
         if (!racha && (isNaN(Number(racha)) || racha < 0))
-            throw "El campo racha debe ser un número válido y no negativo.";
+            throw new CustomError("El campo racha debe ser un número válido y no negativo.");
         if (!monedas && (isNaN(Number(monedas)) || monedas < 0))
-            throw "El campo monedas debe ser un número válido y no negativo.";
+            throw new CustomError("El campo monedas debe ser un número válido y no negativo.");
 
         return new UserEntity(
             id,
