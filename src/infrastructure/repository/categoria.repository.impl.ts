@@ -5,7 +5,7 @@ export class CategoriaRepositoryImpl implements CategoriaRepository{
     constructor(
         private readonly dataSource: CategoriaDatasource
     ){}
-    getSimulacro(id: number, cantidad?:number): Promise<{ categoria: CategoriaEntity; preguntas: { pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }[]; }> {
+    getSimulacro(id: number, cantidad?:number): Promise<CategoriaEntity> {
         return this.dataSource.getSimulacro(id, cantidad)
     }
     getAllPreguntas(id: number, cantidad?: number): Promise<{ categoria: CategoriaEntity; preguntas: PreguntaEntity[]; }> {

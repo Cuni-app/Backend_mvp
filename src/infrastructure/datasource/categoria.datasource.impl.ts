@@ -70,13 +70,11 @@ export class CategoriaDatasourceImpl implements CategoriaDatasource{
         }
     }
 
-    async getSimulacro(id: number, cantidad?: number): Promise<{ categoria: CategoriaEntity; preguntas: { pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }[]; }> {
+    async getSimulacro(id: number, cantidad?: number): Promise<CategoriaEntity> {
         const {categoria, preguntas} = await this.getAllPreguntas(id, cantidad)
         const respuestas = await Promise.all(preguntas.map(p => this.preguntaDatasource.getRespuestasbyIdPregunta(p.id)))
-        return {
-            categoria: categoria,
-            preguntas: respuestas
-        }; 
+        const simulacro = CategoriaEntity.fromObject({...categoria, preguntas: respuestas})
+        return simulacro
     }
     
 }

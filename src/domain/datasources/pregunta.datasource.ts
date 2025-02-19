@@ -6,5 +6,5 @@ export abstract class PreguntaDatasource{
     abstract getById(id: number): Promise<PreguntaEntity>
     abstract updateById(updatePreguntaDTO: UpdatePreguntaDTO): Promise<PreguntaEntity>
     abstract deleteById(id: number): Promise<PreguntaEntity>
-    abstract getRespuestasbyIdPregunta(id: number): Promise<{pregunta: PreguntaEntity, respuestas: RespuestaEntity[]}>
+    abstract getRespuestasbyIdPregunta(id: number): Promise<PreguntaEntity>
 }

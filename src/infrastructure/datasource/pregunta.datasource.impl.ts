@@ -42,17 +42,15 @@ export class PreguntaDatasourceImpl implements PreguntaDatasource{
         return PreguntaEntity.fromObject(deleted)
     }
     
-    async getRespuestasbyIdPregunta(id: number): Promise<{ pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }> {
+    async getRespuestasbyIdPregunta(id: number): Promise<PreguntaEntity> {
         const pregunta = await this.getById(id)
         const respuestas = await prisma.respuesta.findMany({
             where:{
                 id_pregunta: pregunta.id
             }
         })
-        const shuffledRespuestas = respuestas.sort(() => Math.random() - 0.5);
-        return {
-            pregunta: PreguntaEntity.fromObject(pregunta),
-            respuestas: shuffledRespuestas.map(x => RespuestaEntity.fromObject(x))
-        }
+        const shuffledRespuestas = respuestas.sort(() => Math.random() - 0.5).map(r => RespuestaEntity.fromObject(r));
+        const preguntaEntity = PreguntaEntity.fromObject({...pregunta, respuestas: shuffledRespuestas})
+        return preguntaEntity
     }
 }

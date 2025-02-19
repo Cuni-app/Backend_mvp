@@ -14,5 +14,5 @@ export abstract class CategoriaRepository {
     ): Promise<CategoriaEntity>;
     abstract deleteById(id: number): Promise<CategoriaEntity>
     abstract getAllPreguntas(id: number, cantidad?: number): Promise<{categoria: CategoriaEntity, preguntas: PreguntaEntity[]}>;
-    abstract getSimulacro(id: number, cantidad?: number): Promise<{categoria: CategoriaEntity, preguntas: {pregunta: PreguntaEntity,respuestas: RespuestaEntity[]}[]}>
+    abstract getSimulacro(id: number, cantidad?: number): Promise<CategoriaEntity>
 }

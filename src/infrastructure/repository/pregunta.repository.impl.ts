@@ -4,7 +4,7 @@ export class PreguntaRepositoryImpl implements PreguntaRepository{
     constructor(
         private readonly dataSource: PreguntaDatasource
     ){}
-    getRespuestasbyIdPregunta(id: number): Promise<{ pregunta: PreguntaEntity; respuestas: RespuestaEntity[]; }> {
+    getRespuestasbyIdPregunta(id: number): Promise<PreguntaEntity> {
         return this.dataSource.getRespuestasbyIdPregunta(id)
     }
     create(createPreguntaDTO: CreatePreguntaDTO): Promise<PreguntaEntity> {
