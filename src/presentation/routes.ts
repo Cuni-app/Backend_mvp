@@ -6,6 +6,7 @@ import { ResultadoRoutes } from './Resultados/routes';
 import { RespuestaRoutes } from './Respuestas/routes';
 import { ItemRoutes } from './Items/routes';
 import { FollowRoutes } from './Follows/routes';
+import { IARoutes } from './IA/routes';
 
 
 
@@ -24,6 +25,7 @@ export class AppRoutes {
     router.use('/api/respuestas', RespuestaRoutes.routes);
     router.use('/api/items', ItemRoutes.routes);
     router.use('/api/follow', FollowRoutes.routes);
+    router.use('/api/ia', IARoutes.routes);
     
     return router;
   }
