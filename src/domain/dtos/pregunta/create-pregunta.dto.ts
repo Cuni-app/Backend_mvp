@@ -15,7 +15,7 @@ export class CreatePreguntaDTO {
 
         return [
             undefined,
-            new CreatePreguntaDTO( enunciado, imagen_url,solucion_url, id_categoria),
+            new CreatePreguntaDTO( enunciado, imagen_url,solucion_url, +id_categoria),
         ];
     }
 }

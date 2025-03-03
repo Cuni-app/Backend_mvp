@@ -5,6 +5,7 @@ export const envs = {
     PORT: get("PORT").required().asPortNumber(),
     JWT_SECRET: get("JWT_SECRET").required().asString(),
     AI_KEY: get("AI_KEY").required().asString(),
+    API_IMG: get("API_IMG").required().asString(),
 
     SEND_EMAIL: get("SEND_EMAIL").default("false").asBool(),
     MAILER_SERVICE: get("MAILER_SERVICE").required().asString(),
