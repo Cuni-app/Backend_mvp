@@ -15,15 +15,21 @@ datasource db {
 
 //! Aqui se agregan los modelos para crear la base de datos
 
-model administrador {
-  id       Int    @id @default(autoincrement())
-  nombre   String @default("ADMIN")
-  email    String @default("cuni@empresa.com")
-  password String
+// model administrador {
+//   id       Int    @id @default(autoincrement())
+//   nombre   String @default("ADMIN")
+//   email    String @default("cuni@empresa.com")
+//   password String
+// }
+
+enum rol {
+  ADMIN
+  USER
 }
 
 model user {
   id                Int         @id @default(autoincrement())
+  rol               rol         @default(USER)
   nombre            String
   email             String      @unique
   validatedEmail    Boolean     @default(false)
@@ -35,10 +41,12 @@ model user {
   monedas           Int         @default(0)
   fechaCreacion     DateTime    @default(now())
   fechaUltimaAccion DateTime    @default(now())
+  fecha_premium_vencimiento DateTime?
   resultados        resultado[] @relation("UserResultados")
   seguidores        follow[]    @relation("UserSeguidos")
   seguidos          follow[]    @relation("UserSiguiendo")
   items             item[]      @relation("UsuarioItems")
+  preguntas_repondidas PreguntasRealizadas[]
 }
 
 model item {
@@ -89,6 +97,7 @@ model pregunta {
   id_categoria Int
   categoria    categoria   @relation("CategoriaPregunta", fields: [id_categoria], references: [id])
   respuesta    respuesta[] @relation("PreguntaRespuesta")
+  usuarios     PreguntasRealizadas[]
 }
 
 model respuesta {
@@ -97,4 +106,13 @@ model respuesta {
   contenido   String
   id_pregunta Int
   pregunta    pregunta @relation("PreguntaRespuesta", fields: [id_pregunta], references: [id])
+}
+
+model PreguntasRealizadas {
+  id Int @id @default(autoincrement())
+  es_correcto Boolean
+  id_pregunta Int
+  pregunta pregunta @relation(fields: [id_pregunta], references: [id])
+  id_usuario Int
+  usuario user @relation(fields: [id_usuario], references: [id])
 }
