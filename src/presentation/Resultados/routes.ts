@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { ResultadosController } from './controller';
 import { AuthMiddleware } from '../middleware/auth';
 import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
+import { AdminMiddleware } from '../middleware/adminMiddleware';
 
 
 

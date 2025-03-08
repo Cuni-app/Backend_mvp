@@ -5,7 +5,12 @@ import { AdminMiddleware } from "../middleware/adminMiddleware";
 import { AuthMiddleware } from "../middleware/auth";
 
 export class CategoriaRoutes {
+    
     static get routes(): Router {
+        const authMiddle = [
+            AdminMiddleware.validarAdmin,
+            AuthMiddleware.validarToken,
+        ];
         const router = Router();
         const repository = DIContainerRepository.getCategoriaRepository();
         const categoriaController = new CategoriaController(repository);
@@ -15,10 +20,7 @@ export class CategoriaRoutes {
         // router.post("/create",[AdminMiddleware.validarAdmin], categoriaController.crearCategoria );
         router.post(
             "/create",
-            [
-                AdminMiddleware.validarAdmin,
-                AuthMiddleware.validarToken,
-            ],
+            authMiddle,
             categoriaController.crearCategoria
         );
 
@@ -27,8 +29,8 @@ export class CategoriaRoutes {
             categoriaController.obtenerCategoriaPorNombre
         );
         router.get("/:id", categoriaController.obtenerCategoriaPorId);
-        router.delete("/:id", categoriaController.deleteCategoriaById);
-        router.put("/:id", categoriaController.updateCategoriabyId);
+        router.delete("/:id",authMiddle, categoriaController.deleteCategoriaById);
+        router.put("/:id",authMiddle, categoriaController.updateCategoriabyId);
 
         router.get(
             "/getPreguntas/:id",
@@ -36,5 +38,9 @@ export class CategoriaRoutes {
         );
         router.get("/getSimulacro/:id", categoriaController.getSimulacro);
         return router;
+    
+
+    
     }
+    
 }
