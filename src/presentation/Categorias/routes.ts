@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { CategoriaController } from './controller';
 import { DIContainerRepository } from '../../infrastructure/DI/repositoryContainer';
+import { AdminMiddleware } from '../middleware/adminMiddleware';
 
 export class CategoriaRoutes {
 
@@ -11,7 +12,7 @@ export class CategoriaRoutes {
     const categoriaController = new CategoriaController(repository)
     // Definir las rutas
     router.get("/getAll", categoriaController.getAllCategorias)
-    router.post("/create", categoriaController.crearCategoria );
+    router.post("/create",[AdminMiddleware.validarAdmin], categoriaController.crearCategoria );
     router.get("/nombre/:nombreCategoria", categoriaController.obtenerCategoriaPorNombre)
     router.get("/:id", categoriaController.obtenerCategoriaPorId)
     router.delete("/:id", categoriaController.deleteCategoriaById)
