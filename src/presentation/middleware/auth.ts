@@ -21,6 +21,14 @@ export class AuthMiddleware {
             const user = await prisma.user.findUnique({ where: { id: +payload.id } });
             if (!user) return res.status(401).json({ error: 'Invalid token - user' });
             
+            if (req.body.rol !== "ADMIN"){
+                const {password, ...usuario} = user
+                req.body.user = usuario;
+                return next();
+            }
+            if (user.rol !== "ADMIN"){
+                return res.status(401).json("No tienes permiso para ejecutar esta acción")
+            }
             const {password, ...usuario} = user
 
             req.body.user = usuario;
