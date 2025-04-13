@@ -1,5 +1,5 @@
 import { prisma } from "../../data/postgres";
-import { CreateItemDTO, ItemDatasource, ItemEntity, UserDatasource } from "../../domain";
+import { CreateItemDTO, CustomError, ItemDatasource, ItemEntity, UserDatasource, UserEntity } from "../../domain";
 
 export class ItemDatasourceImpl implements ItemDatasource{
     constructor(
@@ -36,8 +36,13 @@ export class ItemDatasourceImpl implements ItemDatasource{
         return items.map(i => ItemEntity.fromObject(i))
     }
     async asignarItem(id: number, email: string): Promise<{ name: string; email: string; item: ItemEntity; }> {
-        const user = await this.userDatasource.getByEmail(email)
-        const item = await prisma.item.update({
+        const user : UserEntity = await this.userDatasource.getByEmail(email)
+        const item = await prisma.item.findUnique({where:{id}})
+        if (!item) throw new CustomError('Item not founded :(',401)
+        if(user.monedas<item?.precio){
+            throw new CustomError("You don't have enough money!")
+        }
+        const itemRes = await prisma.item.update({
             where: {
                 id
             },
@@ -49,7 +54,15 @@ export class ItemDatasourceImpl implements ItemDatasource{
                 }
             }
         })
-        return {email, name: user.nombre, item: ItemEntity.fromObject(item)}
+        const transaction = await prisma.user.update({
+            where:{
+                email
+            },
+            data:{
+                monedas:user.monedas-item.precio
+            }
+        })
+        return {email, name: user.nombre, item: ItemEntity.fromObject(itemRes)}
     }
     
 }
