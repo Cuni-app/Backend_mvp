@@ -12,6 +12,7 @@ export class UserEntity {
         public readonly exp: number = 0,
         public readonly racha: number = 0,
         public readonly monedas: number = 0,
+        public readonly fechaCreacion?: Date,
         public readonly password?: string,
     ) {}
     // get isValidated() {
@@ -30,6 +31,7 @@ export class UserEntity {
             exp,
             racha,
             monedas,
+            fechaCreacion
         } = object;
         // Todo realizar validaciones de datos
         if (isNaN(Number(id)) || !id) throw new CustomError("Es requerido el id");
@@ -51,7 +53,8 @@ export class UserEntity {
             throw new CustomError("El campo racha debe ser un número válido y no negativo.");
         if (!monedas && (isNaN(Number(monedas)) || monedas < 0))
             throw new CustomError("El campo monedas debe ser un número válido y no negativo.");
-
+        if (fechaCreacion && !(fechaCreacion instanceof Date))
+            throw new CustomError("El campo fechaCreacion debe ser una instancia de Date.");
         return new UserEntity(
             id,
             nombre,
@@ -61,7 +64,8 @@ export class UserEntity {
             nivel,
             exp,
             racha,
-            monedas
+            monedas,
+            fechaCreacion
         );
     }
 }

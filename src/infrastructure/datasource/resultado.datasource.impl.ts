@@ -9,13 +9,14 @@ export class ResultadoDatasourceImpl implements ResultadoDatasource{
     ){}
     async create(createResultadoDTO: CreateResultadoDTO, updateUserDTO: UpdateUserDTO): Promise<ResultadoEntity> {
         const datosUsuario = await this.userDatasource.getById(createResultadoDTO.id_usuario)
+        if(!datosUsuario) throw new Error(`El usuario con id ${createResultadoDTO.id_usuario} no fe encontrado`)
+        
         await this.categoryDatasource.findById(createResultadoDTO.id_categoria)
 
         const resultado = await prisma.resultado.create({
             data: createResultadoDTO
         })
 
-        if(!datosUsuario) throw new Error(`El usuario con id ${createResultadoDTO.id_usuario} no fe encontrado`)
         const recompensa = await prisma.user.update({
             where:{
                 id:createResultadoDTO.id_usuario

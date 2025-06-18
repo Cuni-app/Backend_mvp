@@ -61,6 +61,7 @@ export class UserDatasourceImpl implements UserDatasource{
         if (!isMatch) throw new CustomError("Contraseña incorrecta", 404);
         const token = await JwtAdapter.generateToken({ id: user.id });
         return {token: token + '' , user: {
+            id: user.id,
             email: loginUserDto.email,
             nombre: user.nombre
         }}
